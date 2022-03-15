@@ -54,11 +54,22 @@ void BaseTarget::setVelY(const qreal &velY)
     mVelY = velY;
 }
 
+qreal BaseTarget::rcs() const
+{
+    return mRcs;
+}
+
+void BaseTarget::setRcs(const qreal &rcs)
+{
+    mRcs = rcs;
+}
+
 BaseTarget::BaseTarget()
     : mPosX(0.0)
     , mPosY(0.0)
     , mVelX(0.0)
     , mVelY(0.0)
+    , mRcs(0.0)
 {
     initTargetConversions();
 }
@@ -70,30 +81,32 @@ BaseTarget::BaseTarget(const BaseTarget &obj)
     mPosY = obj.mPosY;
     mVelX = obj.mVelX;
     mVelY = obj.mVelY;
+    mRcs  = obj.mRcs;
 }
 
-BaseTarget::BaseTarget(qreal posX, qreal posY, qreal velX, qreal velY)
+BaseTarget::BaseTarget(qreal posX, qreal posY, qreal velX, qreal velY, qreal rcs)
     : mPosX(posX)
     , mPosY(posY)
     , mVelX(velX)
     , mVelY(velY)
+    , mRcs(rcs)
 {
     initTargetConversions();
 }
 
 BaseTarget::operator int() const
 {
-    return 9;
+    return mRcs;
 }
 
 BaseTarget::operator double() const
 {
-    return 9.999;
+    return mRcs;
 }
 
 BaseTarget::operator QString() const
 {
-    return QString("BaseTarget(%1, %2, %3, %4)").arg(mPosX).arg(mPosY).arg(mVelX).arg(mVelY);
+    return QString("BaseTarget(%1, %2, %3, %4, %5)").arg(mPosX).arg(mPosY).arg(mVelX).arg(mVelY).arg(mRcs);
 }
 
 #ifndef QT_NO_DEBUG_STREAM

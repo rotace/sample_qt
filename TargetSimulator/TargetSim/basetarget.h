@@ -11,11 +11,12 @@ class BaseTarget
     qreal mPosY;
     qreal mVelX;
     qreal mVelY;
+    qreal mRcs;
 
 public:
     BaseTarget();
     BaseTarget(const BaseTarget &obj);
-    BaseTarget(qreal posX, qreal posY, qreal velX, qreal velY);
+    BaseTarget(qreal posX, qreal posY, qreal velX, qreal velY, qreal rcs);
     operator int() const;
     operator double() const;
     operator QString() const;
@@ -27,6 +28,8 @@ public:
     void setVelX(const qreal &velX);
     qreal velY() const;
     void setVelY(const qreal &velY);
+    qreal rcs() const;
+    void setRcs(const qreal &rcs);
 };
 Q_DECLARE_METATYPE(BaseTarget)
 

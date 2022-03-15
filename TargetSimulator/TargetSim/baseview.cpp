@@ -4,13 +4,13 @@
 
 BaseView::BaseView(QWidget *parent)
 {
-
+    Q_UNUSED(parent);
 }
 
 QRect BaseView::visualRect(const QModelIndex &index) const
 {
     Q_UNUSED(index);
-    return QRect(0, 0, 300, 200);
+    return QRect();
 }
 
 void BaseView::scrollTo(const QModelIndex &index, ScrollHint hint)
@@ -77,4 +77,12 @@ void BaseView::rowsInserted(const QModelIndex &parent, int start, int end)
         this->insertTarget(i);
 
     QAbstractItemView::rowsInserted(parent, start, end);
+}
+
+
+void BaseView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
+{
+    Q_UNUSED(parent);
+    for(int i=start; i<=end; ++i)
+        this->removeTarget(start);
 }

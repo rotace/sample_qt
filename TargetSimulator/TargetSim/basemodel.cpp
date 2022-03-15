@@ -12,8 +12,13 @@ BaseModel::BaseModel(QObject *parent)
 
 void BaseModel::setTarget(const BaseTarget &target)
 {
-    insertRow(this->rowCount());
+    this->insertRow(this->rowCount());
     this->setData(this->index(this->rowCount()-1) ,QVariant::fromValue(target), Qt::DisplayRole);
+}
+
+void BaseModel::delTarget()
+{
+    this->removeRow(this->rowCount()-1);
 }
 
 

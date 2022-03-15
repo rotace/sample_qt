@@ -14,6 +14,7 @@ protected:
 public:
     explicit BaseModel(QObject *parent = 0);
     void setTarget(const BaseTarget &target);
+    void delTarget();
 
 signals:
 

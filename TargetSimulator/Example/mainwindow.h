@@ -21,6 +21,8 @@ public:
 private slots:
     void on_addTargetPushButton_clicked();
 
+    void on_delPushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     SimulatorModel *mModel;

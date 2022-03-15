@@ -1,27 +1,44 @@
 #include "mapview.h"
 
 #include <QtCore>
+#include <QtWidgets>
 
 #include "mapviewtarget.h"
+
+
+void QGraphicsViewImpl::wheelEvent(QWheelEvent *e)
+{
+    if (e->modifiers() & Qt::ControlModifier) {
+        if(e->angleDelta().y() > 0)
+            this->scale(1.1, 1.1);
+        else
+            this->scale(0.9, 0.9);
+        e->accept();
+    } else {
+        QGraphicsView::wheelEvent(e);
+    }
+}
+
 
 MapView::MapView(QWidget *parent)
     : BaseView(parent)
 {
-    mView = new QGraphicsView();
-    mView->setParent(this);
+    mView = new QGraphicsViewImpl(this);
+    mView->setDragMode(QGraphicsView::ScrollHandDrag);
+    mView->setCacheMode(QGraphicsView::CacheBackground);
+    mView->setRenderHint(QPainter::Antialiasing, false);
+    mView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
+    mView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    mView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 
     QGraphicsScene *scene = new QGraphicsScene();
-    scene->setParent(mView);
-
-    scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-200, -200, 400, 400);
+//    qint32 area = 10000;
+//    scene->setSceneRect(-area, -area, 2*area, 2*area);
     mView->setScene(scene);
-    mView->setCacheMode(QGraphicsView::CacheBackground);
-    mView->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
-    mView->setRenderHint(QPainter::Antialiasing);
-    mView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-    mView->scale(qreal(0.8), qreal(0.8));
-    mView->setMinimumSize(400, 400);
+
+    QHBoxLayout * topLayout = new QHBoxLayout;
+    topLayout->addWidget(mView);
+    this->setLayout(topLayout);
 }
 
 MapView::~MapView()
@@ -42,3 +59,10 @@ void MapView::insertTarget(int i)
     mList.insert(i, new MapViewTarget());
     mView->scene()->addItem(mList.at(i));
 }
+
+
+void MapView::removeTarget(int i)
+{
+    mView->scene()->removeItem(mList.takeAt(i));
+}
+

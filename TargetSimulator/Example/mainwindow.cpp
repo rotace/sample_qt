@@ -21,6 +21,11 @@ MainWindow::MainWindow(QWidget *parent)
     MapView *mapView = new MapView();
     ui->centralWidget->layout()->addWidget(mapView);
     mapView->setModel(mModel);
+
+    mModel->setTarget(BaseTarget(-200,0,0,0,0));
+    mModel->setTarget(BaseTarget(+200,0,0,0,0));
+    mModel->setTarget(BaseTarget(-100,0,0,0,0));
+    mModel->setTarget(BaseTarget(+100,0,0,0,0));
 }
 
 MainWindow::~MainWindow()
@@ -34,6 +39,12 @@ void MainWindow::on_addTargetPushButton_clicked()
         ui->posXDoubleSpinBox->value(),
         ui->posYDoubleSpinBox->value(),
         ui->velXDoubleSpinBox->value(),
-        ui->velYDoubleSpinBox->value()
+        ui->velYDoubleSpinBox->value(),
+        ui->rcsDoubleSpinBox->value()
     ));
+}
+
+void MainWindow::on_delPushButton_clicked()
+{
+    mModel->delTarget();
 }

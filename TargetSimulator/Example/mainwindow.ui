@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>794</width>
-    <height>300</height>
+    <height>306</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -89,10 +89,41 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
+       <item row="5" column="1">
         <widget class="QPushButton" name="addTargetPushButton">
          <property name="text">
           <string>Add Target</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="addLabel">
+         <property name="text">
+          <string>---&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="rcsLabel">
+         <property name="text">
+          <string>Rcs</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QDoubleSpinBox" name="rcsDoubleSpinBox"/>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="delLabel">
+         <property name="text">
+          <string>---&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QPushButton" name="delPushButton">
+         <property name="text">
+          <string>Del Target</string>
          </property>
         </widget>
        </item>

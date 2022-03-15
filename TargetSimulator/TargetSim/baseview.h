@@ -12,6 +12,7 @@ public:
     explicit BaseView(QWidget *parent = 0);
     virtual void updateTarget(int i, BaseTarget &t) = 0;
     virtual void insertTarget(int i) = 0;
+    virtual void removeTarget(int i) = 0;
 
 signals:
 
@@ -35,6 +36,7 @@ protected:
 protected slots:
     void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles) Q_DECL_OVERRIDE;
     void rowsInserted(const QModelIndex &parent, int start, int end) Q_DECL_OVERRIDE;
+    void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) Q_DECL_OVERRIDE;
 };
 
 #endif // BASEVIEW_H
