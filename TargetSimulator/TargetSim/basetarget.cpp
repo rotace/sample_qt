@@ -64,6 +64,12 @@ void BaseTarget::setRcs(const qreal &rcs)
     mRcs = rcs;
 }
 
+void BaseTarget::update(qreal deltaTime)
+{
+    mPosX += mVelX * deltaTime;
+    mPosY += mVelY * deltaTime;
+}
+
 BaseTarget::BaseTarget()
     : mPosX(0.0)
     , mPosY(0.0)

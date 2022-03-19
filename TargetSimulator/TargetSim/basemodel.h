@@ -7,8 +7,6 @@
 class BaseModel : public QAbstractListModel
 {
     Q_OBJECT
-
-protected:
     QList<QVariant> mList;
 
 public:

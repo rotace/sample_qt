@@ -49,8 +49,9 @@ MapView::~MapView()
     }
 }
 
-void MapView::updateTarget(int i, BaseTarget &t)
+void MapView::updateTarget(int i, QVariant &v)
 {
+    BaseTarget t = v.value<BaseTarget>();
     mList[i]->setPos(t.posX(), t.posY());
 }
 

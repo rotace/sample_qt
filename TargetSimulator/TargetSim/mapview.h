@@ -37,7 +37,7 @@ public:
 
     // BaseView interface
 public:
-    void updateTarget(int i, BaseTarget &t) Q_DECL_OVERRIDE;
+    void updateTarget(int i, QVariant &v) Q_DECL_OVERRIDE;
     void insertTarget(int i) Q_DECL_OVERRIDE;
     void removeTarget(int i) Q_DECL_OVERRIDE;
 };

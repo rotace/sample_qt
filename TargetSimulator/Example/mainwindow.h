@@ -23,6 +23,8 @@ private slots:
 
     void on_delPushButton_clicked();
 
+    void on_timerPushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     SimulatorModel *mModel;

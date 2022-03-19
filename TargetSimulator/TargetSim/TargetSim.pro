@@ -15,7 +15,6 @@ SOURCES += targetsim.cpp \
     basemodel.cpp \
     simulatormodel.cpp \
     basetarget.cpp \
-    straighttarget.cpp \
     baseview.cpp \
     mapview.cpp \
     mapviewtarget.cpp
@@ -25,7 +24,6 @@ HEADERS += targetsim.h\
     basemodel.h \
     simulatormodel.h \
     basetarget.h \
-    straighttarget.h \
     baseview.h \
     mapview.h \
     mapviewtarget.h

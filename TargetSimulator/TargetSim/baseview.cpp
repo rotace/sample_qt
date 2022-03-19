@@ -65,8 +65,8 @@ void BaseView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottom
 {
     for(int i=topLeft.row(); i<=bottomRight.row(); ++i) {
         QModelIndex index = this->model()->index(i, 0);
-        BaseTarget target = this->model()->data(index).value<BaseTarget>();
-        this->updateTarget(i, target);
+        QVariant value = this->model()->data(index);
+        this->updateTarget(i, value);
     }
     QAbstractItemView::dataChanged(topLeft, bottomRight, roles);
 }

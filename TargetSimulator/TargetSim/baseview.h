@@ -10,7 +10,7 @@ class BaseView : public QAbstractItemView
     Q_OBJECT
 public:
     explicit BaseView(QWidget *parent = 0);
-    virtual void updateTarget(int i, BaseTarget &t) = 0;
+    virtual void updateTarget(int i, QVariant &v) = 0;
     virtual void insertTarget(int i) = 0;
     virtual void removeTarget(int i) = 0;
 

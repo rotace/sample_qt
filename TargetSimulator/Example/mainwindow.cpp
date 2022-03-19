@@ -22,10 +22,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->centralWidget->layout()->addWidget(mapView);
     mapView->setModel(mModel);
 
-    mModel->setTarget(BaseTarget(-200,0,0,0,0));
-    mModel->setTarget(BaseTarget(+200,0,0,0,0));
-    mModel->setTarget(BaseTarget(-100,0,0,0,0));
-    mModel->setTarget(BaseTarget(+100,0,0,0,0));
+    mModel->setTarget(BaseTarget(-200,0,0,+10,0));
+    mModel->setTarget(BaseTarget(+200,0,0,-10,0));
+    mModel->setTarget(BaseTarget(-100,0,0,+10,0));
+    mModel->setTarget(BaseTarget(+100,0,0,-10,0));
 }
 
 MainWindow::~MainWindow()
@@ -47,4 +47,20 @@ void MainWindow::on_addTargetPushButton_clicked()
 void MainWindow::on_delPushButton_clicked()
 {
     mModel->delTarget();
+}
+
+
+void MainWindow::on_timerPushButton_clicked()
+{
+    if( mModel->isRunning() ) {
+        mModel->stop();
+    } else {
+        mModel->setDeltaTime(ui->timeDoubleSpinBox->value());
+        mModel->start();
+    }
+    if( mModel->isRunning() ) {
+        ui->timerPushButton->setText("Timer Running");
+    } else {
+        ui->timerPushButton->setText("Timer Start");
+    }
 }

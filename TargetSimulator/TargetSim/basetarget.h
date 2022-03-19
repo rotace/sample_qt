@@ -30,6 +30,7 @@ public:
     void setVelY(const qreal &velY);
     qreal rcs() const;
     void setRcs(const qreal &rcs);
+    void update(qreal deltaTime);
 };
 Q_DECLARE_METATYPE(BaseTarget)
 
