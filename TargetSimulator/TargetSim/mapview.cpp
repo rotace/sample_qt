@@ -23,6 +23,9 @@ void QGraphicsViewImpl::wheelEvent(QWheelEvent *e)
 MapView::MapView(QWidget *parent)
     : BaseView(parent)
 {
+    QHBoxLayout * topLayout = new QHBoxLayout;
+    this->setLayout(topLayout);
+
     mView = new QGraphicsViewImpl(this);
     mView->setDragMode(QGraphicsView::ScrollHandDrag);
     mView->setCacheMode(QGraphicsView::CacheBackground);
@@ -30,15 +33,12 @@ MapView::MapView(QWidget *parent)
     mView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
     mView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     mView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    topLayout->addWidget(mView);
 
     QGraphicsScene *scene = new QGraphicsScene();
 //    qint32 area = 10000;
 //    scene->setSceneRect(-area, -area, 2*area, 2*area);
     mView->setScene(scene);
-
-    QHBoxLayout * topLayout = new QHBoxLayout;
-    topLayout->addWidget(mView);
-    this->setLayout(topLayout);
 }
 
 MapView::~MapView()

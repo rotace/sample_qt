@@ -17,7 +17,8 @@ SOURCES += targetsim.cpp \
     basetarget.cpp \
     baseview.cpp \
     mapview.cpp \
-    mapviewtarget.cpp
+    mapviewtarget.cpp \
+    cameraview.cpp
 
 HEADERS += targetsim.h\
         targetsim_global.h \
@@ -26,7 +27,8 @@ HEADERS += targetsim.h\
     basetarget.h \
     baseview.h \
     mapview.h \
-    mapviewtarget.h
+    mapviewtarget.h \
+    cameraview.h
 
 unix {
     target.path = /usr/lib

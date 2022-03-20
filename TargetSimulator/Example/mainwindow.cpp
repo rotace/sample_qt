@@ -4,6 +4,7 @@
 #include <QtWidgets>
 
 #include "mapview.h"
+#include "cameraview.h"
 #include "basetarget.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -21,6 +22,10 @@ MainWindow::MainWindow(QWidget *parent)
     MapView *mapView = new MapView();
     ui->centralWidget->layout()->addWidget(mapView);
     mapView->setModel(mModel);
+
+    CameraView *camView = new CameraView();
+    ui->centralWidget->layout()->addWidget(camView);
+    camView->setModel(mModel);
 
     mModel->setTarget(BaseTarget(-200,0,0,+10,0));
     mModel->setTarget(BaseTarget(+200,0,0,-10,0));
