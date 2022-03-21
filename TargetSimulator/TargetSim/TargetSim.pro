@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += widgets network sql
+QT       += widgets network sql 3dcore 3drenderer 3dinput
 
 TARGET = TargetSim
 TEMPLATE = lib

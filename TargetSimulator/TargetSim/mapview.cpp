@@ -51,8 +51,9 @@ MapView::~MapView()
 
 void MapView::updateTarget(int i, QVariant &v)
 {
+    if( !v.isValid() || !v.canConvert<BaseTarget>() ) return;
     BaseTarget t = v.value<BaseTarget>();
-    mList[i]->setPos(t.posX(), t.posY());
+    mList[i]->setPos(t.posX(), -t.posY());
 }
 
 void MapView::insertTarget(int i)

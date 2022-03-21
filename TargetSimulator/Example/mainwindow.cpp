@@ -1,10 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include <QtWidgets>
-
-#include "mapview.h"
-#include "cameraview.h"
 #include "basetarget.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -15,22 +11,23 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     mModel->setParent(this);
 
-    QListView *listView = new QListView();
-    ui->centralWidget->layout()->addWidget(listView);
-    listView->setModel(mModel);
+    mListView = new QListView();
+    ui->centralWidget->layout()->addWidget(mListView);
+    mListView->setModel(mModel);
 
-    MapView *mapView = new MapView();
-    ui->centralWidget->layout()->addWidget(mapView);
-    mapView->setModel(mModel);
+    mMapView = new MapView();
+    ui->centralWidget->layout()->addWidget(mMapView);
+    mMapView->setModel(mModel);
 
-    CameraView *camView = new CameraView();
-    ui->centralWidget->layout()->addWidget(camView);
-    camView->setModel(mModel);
+    mCamView = new CameraView();
+    ui->centralWidget->layout()->addWidget(mCamView);
+    mCamView->setModel(mModel);
 
     mModel->setTarget(BaseTarget(-200,0,0,+10,0));
     mModel->setTarget(BaseTarget(+200,0,0,-10,0));
     mModel->setTarget(BaseTarget(-100,0,0,+10,0));
     mModel->setTarget(BaseTarget(+100,0,0,-10,0));
+    mModel->setTarget(BaseTarget());
 }
 
 MainWindow::~MainWindow()
@@ -68,4 +65,10 @@ void MainWindow::on_timerPushButton_clicked()
     } else {
         ui->timerPushButton->setText("Timer Start");
     }
+}
+
+
+void MainWindow::closeEvent(QCloseEvent *)
+{
+    mCamView->close();
 }

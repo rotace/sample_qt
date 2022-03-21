@@ -1,10 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
+#include <QtWidgets>
 
 #include "simulatormodel.h"
-
+#include "mapview.h"
+#include "cameraview.h"
 
 namespace Ui {
 class MainWindow;
@@ -28,7 +29,13 @@ private slots:
 private:
     Ui::MainWindow *ui;
     SimulatorModel *mModel;
+    QListView *mListView;
+    CameraView *mCamView;
+    MapView *mMapView;
 
+    // QWidget interface
+protected:
+    void closeEvent(QCloseEvent *) Q_DECL_OVERRIDE;
 };
 
 #endif // MAINWINDOW_H
