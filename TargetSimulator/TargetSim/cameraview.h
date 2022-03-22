@@ -3,6 +3,7 @@
 
 #include "baseview.h"
 
+#include <QtWidgets>
 #include <Qt3DRenderer/QWindow>
 #include <Qt3DRenderer/QMaterial>
 #include <Qt3DCore/QEntity>
@@ -13,7 +14,12 @@
 class CameraView : public BaseView
 {
     Q_OBJECT
+    qreal mAlt;
+    QImage mImage;
+    QGraphicsView *mView;
+    QGraphicsPixmapItem *mItem;
     Qt3D::QWindow *mWindow;
+    Qt3D::QCamera *mCamera;
     Qt3D::QEntity *mRootEntity;
     Qt3D::QMaterial *mMaterial;
     QList<Qt3D::QEntity*> mEntityList;
@@ -22,7 +28,15 @@ class CameraView : public BaseView
 
 public:
     explicit CameraView(QWidget *parent = 0);
+    explicit CameraView(qreal altitude, qreal elevAngleOfView, QSize pixelSize, bool isInputEnabled = false, QWidget *parent = 0);
     void close() { mWindow->close(); };
+    qreal azim() const;
+    qreal elev() const;
+    QImage image() const { return mImage; }
+    void setCameraDirection(qreal azim, qreal elev);
+
+private:
+    void updateView();
 
 signals:
 

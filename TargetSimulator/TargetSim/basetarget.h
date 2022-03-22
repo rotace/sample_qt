@@ -16,7 +16,7 @@ class BaseTarget
 public:
     BaseTarget();
     BaseTarget(const BaseTarget &obj);
-    BaseTarget(qreal posX, qreal posY, qreal velX, qreal velY, qreal rcs);
+    BaseTarget(qreal posX, qreal posY, qreal velX, qreal velY, qreal rcs = 10);
     operator int() const;
     operator double() const;
     operator QString() const;

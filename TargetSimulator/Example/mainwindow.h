@@ -26,12 +26,22 @@ private slots:
 
     void on_timerPushButton_clicked();
 
+    void on_leftPushButton_clicked();
+
+    void on_rightPushButton_clicked();
+
+    void on_upPushButton_clicked();
+
+    void on_downPushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     SimulatorModel *mModel;
     QListView *mListView;
     CameraView *mCamView;
     MapView *mMapView;
+    qreal mAzim;
+    qreal mElev;
 
     // QWidget interface
 protected:
