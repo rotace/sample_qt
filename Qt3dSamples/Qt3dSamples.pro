@@ -2,4 +2,5 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     simple-cpp \
-    simple-qml
+    simple-qml \
+    simple-hybrid
