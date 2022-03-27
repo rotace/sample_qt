@@ -1,9 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QtWidgets>
 #include <Qt3DCore>
 #include <Qt3DRenderer>
 #include <Qt3DInput/QInputAspect>
+
+#define USE_EMBED
 
 void MainWindow::buttonPushed(QString message)
 {
@@ -33,9 +36,15 @@ MainWindow::MainWindow(QWidget *parent)
     // Load QML
     mEngine->setSource(QUrl("qrc:/main.qml"));
 
+#ifdef USE_EMBED
+    // Widget
+    ui->centralwidget->layout()->addWidget(QWidget::createWindowContainer(mWindow, this));
+    this->resize(700, 300);
+#else
     // Window
     mWindow->resize(QSize(480, 320));
     mWindow->show();
+#endif
 }
 
 MainWindow::~MainWindow()
