@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , mWindow(new Window)
-    , mEngine(new Qt3D::Quick::QQmlAspectEngine(this))
+    , mEngine(new Qt3D::Quick::QQmlAspectEngine)
 {
     ui->setupUi(this);
 
@@ -50,7 +50,10 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+#ifndef USE_EMBED
     delete mWindow;
+    delete mEngine;
+#endif
 }
 
 void MainWindow::on_radiusSpinBox_valueChanged(int arg1)
