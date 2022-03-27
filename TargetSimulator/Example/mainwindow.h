@@ -6,6 +6,7 @@
 #include "simulatormodel.h"
 #include "mapview.h"
 #include "cameraview.h"
+#include "qmlcameraview.h"
 
 namespace Ui {
 class MainWindow;
@@ -34,10 +35,19 @@ private slots:
 
     void on_downPushButton_clicked();
 
+    void on_togglePushButton_clicked();
+
+    void on_debug1PushButton_clicked();
+
+    void on_debug2PushButton_clicked();
+
+
+
 private:
     Ui::MainWindow *ui;
     SimulatorModel *mModel;
     QListView *mListView;
+    QmlCameraView * mQmlCamView;
     CameraView *mCamView;
     MapView *mMapView;
     qreal mAzim;

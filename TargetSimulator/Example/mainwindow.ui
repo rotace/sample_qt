@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1109</width>
-    <height>527</height>
+    <height>685</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -212,6 +212,27 @@
            </widget>
           </item>
          </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="togglePushButton">
+         <property name="text">
+          <string>hide</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="debug1PushButton">
+         <property name="text">
+          <string>debug1</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="debug2PushButton">
+         <property name="text">
+          <string>debug2</string>
+         </property>
         </widget>
        </item>
       </layout>

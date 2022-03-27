@@ -29,10 +29,14 @@ class CameraView : public BaseView
 public:
     explicit CameraView(QWidget *parent = 0);
     explicit CameraView(qreal altitude, qreal elevAngleOfView, QSize pixelSize, bool isInputEnabled = false, QWidget *parent = 0);
-    void close() { mWindow->close(); };
+    ~CameraView();
     qreal azim() const;
     qreal elev() const;
     QImage image() const { return mImage; }
+    void close() { mWindow->close(); }
+    void hide() { mWindow->setVisible(false); }
+    void show() { mWindow->setVisible(true); }
+    bool isVisible() { return mWindow->isVisible(); }
     void setCameraDirection(qreal azim, qreal elev);
 
 private:

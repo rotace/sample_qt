@@ -1,24 +1,8 @@
 #include "cameraview.h"
 
-
-#include <Qt3DCore/QCamera>
-#include <Qt3DCore/QCameraLens>
-#include <Qt3DCore/QTransform>
-#include <Qt3DCore/QLookAtTransform>
-#include <Qt3DCore/QTranslateTransform>
-#include <Qt3DCore/QAspectEngine>
-
+#include <Qt3DCore>
+#include <Qt3DRenderer>
 #include <Qt3DInput/QInputAspect>
-
-#include <Qt3DRenderer/QRenderAspect>
-#include <Qt3DRenderer/QFrameGraph>
-#include <Qt3DRenderer/QForwardRenderer>
-#include <Qt3DRenderer/QPhongMaterial>
-
-#include <Qt3DRenderer/QCylinderMesh>
-#include <Qt3DRenderer/QSphereMesh>
-#include <Qt3DRenderer/QTorusMesh>
-
 #include <QPropertyAnimation>
 
 #include <QtCore>
@@ -39,7 +23,7 @@ CameraView::CameraView(qreal altitude, qreal elevAngleOfView, QSize pixelSize, b
     , mRootEntity(new Qt3D::QEntity)
     , mMaterial(new Qt3D::QPhongMaterial(mRootEntity))
 {
-    QHBoxLayout * topLayout = new QHBoxLayout;
+    QHBoxLayout *topLayout = new QHBoxLayout;
     this->setLayout(topLayout);
 
     mView->setScene(new QGraphicsScene);
@@ -59,11 +43,17 @@ CameraView::CameraView(qreal altitude, qreal elevAngleOfView, QSize pixelSize, b
     mCamera->setViewCenter(QVector3D(0, 1, mAlt));
 
     mWindow->setRootEntity(mRootEntity);
-    mWindow->setFlags(Qt::WindowStaysOnTopHint);
     mWindow->resize(pixelSize);
     mWindow->setMinimumSize(pixelSize);
     mWindow->setMaximumSize(pixelSize);
+    mWindow->setFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint );
     mWindow->show();
+}
+
+CameraView::~CameraView()
+{
+    qDebug() << "CameraView Destructor Called!";
+    delete mWindow;
 }
 
 qreal CameraView::azim() const

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets network sql 3dcore 3drenderer 3dinput
+QT       += core gui widgets network sql 3dcore 3drenderer 3dinput 3dquick
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

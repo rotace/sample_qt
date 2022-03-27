@@ -7,6 +7,9 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , mModel(new SimulatorModel)
+    , mQmlCamView(0)
+    , mCamView(0)
+    , mMapView(0)
     , mAzim(0.0)
     , mElev(0.0)
 {
@@ -24,9 +27,14 @@ MainWindow::MainWindow(QWidget *parent)
     qreal altitude = 3.0;
     qreal elevAngleOfView = 45.0;
     QSize pixelSize = QSize(480, 320);
+
     mCamView = new CameraView(altitude, elevAngleOfView, pixelSize);
     ui->centralWidget->layout()->addWidget(mCamView);
     mCamView->setModel(mModel);
+
+    mQmlCamView = new QmlCameraView(altitude, elevAngleOfView, pixelSize);
+    ui->centralWidget->layout()->addWidget(mQmlCamView);
+    mQmlCamView->setModel(mModel);
 
     mModel->setTarget(BaseTarget(-100,-0.0,0,+10));
     mModel->setTarget(BaseTarget(-0.0,-100,0,-10));
@@ -75,7 +83,7 @@ void MainWindow::on_timerPushButton_clicked()
 
 void MainWindow::closeEvent(QCloseEvent *)
 {
-    mCamView->close();
+    QApplication::quit();
 }
 
 void MainWindow::on_leftPushButton_clicked()
@@ -105,3 +113,31 @@ void MainWindow::on_downPushButton_clicked()
     mCamView->setCameraDirection(mAzim, mElev);
     ui->statusBar->showMessage(QString("AZIM: %1 deg, ELEV: %2 deg").arg(mCamView->azim()).arg(mCamView->elev()));
 }
+
+void MainWindow::on_togglePushButton_clicked()
+{
+    bool isVisible = false;
+    if( mCamView != 0 ) isVisible |= mCamView->isVisible();
+    if( mQmlCamView != 0 ) isVisible |= mQmlCamView->isVisible();
+
+    if( isVisible ) {
+        if( mCamView != 0 ) mCamView->hide();
+        if( mQmlCamView != 0 ) mQmlCamView->hide();
+        ui->togglePushButton->setText("show");
+    } else {
+        if( mCamView != 0 ) mCamView->show();
+        if( mQmlCamView != 0 ) mQmlCamView->show();
+        ui->togglePushButton->setText("hide");
+    }
+}
+
+void MainWindow::on_debug1PushButton_clicked()
+{
+
+}
+
+void MainWindow::on_debug2PushButton_clicked()
+{
+
+}
+
