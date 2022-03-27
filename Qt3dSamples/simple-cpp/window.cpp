@@ -25,6 +25,10 @@ Window::Window(QScreen *screen)
     create();
 }
 
+void Window::setCamera(Qt3D::QCamera *camera)
+{
+    mCamera = camera;
+}
 
 void Window::keyPressEvent(QKeyEvent *e)
 {
@@ -37,4 +41,11 @@ void Window::keyPressEvent(QKeyEvent *e)
         default:
             QWindow::keyPressEvent( e );
     }
+}
+
+
+void Window::resizeEvent(QResizeEvent *e)
+{
+    if ( mCamera == 0 ) return;
+    mCamera->setAspectRatio(float(this->width()) / float(this->height()));
 }

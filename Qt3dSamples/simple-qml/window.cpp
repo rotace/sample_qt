@@ -25,6 +25,10 @@ Window::Window(QScreen *screen)
     create();
 }
 
+void Window::setEntity(QSharedPointer<Qt3D::QEntity> entity)
+{
+    mEntity = entity;
+}
 
 void Window::keyPressEvent(QKeyEvent *e)
 {
@@ -37,4 +41,11 @@ void Window::keyPressEvent(QKeyEvent *e)
         default:
             QWindow::keyPressEvent( e );
     }
+}
+
+
+void Window::resizeEvent(QResizeEvent *e)
+{
+    if ( mEntity.isNull() ) return;
+    qDebug() << "setAspectRatio:" << mEntity->setProperty("aspectRatio", float(this->width()) / float(this->height()));
 }

@@ -92,6 +92,7 @@ int main(int argc, char *argv[])
 
     // Camera
     Qt3D::QCamera *camera= new Qt3D::QCamera(rootEntity);
+    window.setCamera(camera);
 
     // FrameGraph
     viewport->setRect(QRectF(0, 0, 1, 1));

@@ -26,6 +26,9 @@ int main(int argc, char *argv[])
     // Load QML
     engine.setSource(QUrl("qrc:/main.qml"));
 
+    // Camera
+    window.setEntity(engine.aspectEngine()->rootEntity());
+
     // Window
     window.resize(QSize(480, 320));
     window.show();

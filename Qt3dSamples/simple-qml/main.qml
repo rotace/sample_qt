@@ -5,6 +5,8 @@ import QtQuick 2.5 as QQ2
 Entity {
     id: sceneRoot
 
+    property alias aspectRatio: camera.aspectRatio
+
     Camera {
         id: camera
         projectionType: CameraLens.PerspectiveProjection
