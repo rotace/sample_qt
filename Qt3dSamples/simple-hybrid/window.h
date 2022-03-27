@@ -13,6 +13,7 @@ public:
     // QWindow interface
 protected:
     void keyPressEvent(QKeyEvent *) Q_DECL_OVERRIDE;
+    void hideEvent(QHideEvent *) Q_DECL_OVERRIDE;
 };
 
 #endif // WINDOW_H

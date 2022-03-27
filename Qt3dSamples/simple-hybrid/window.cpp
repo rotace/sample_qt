@@ -2,7 +2,7 @@
 
 
 #include <QKeyEvent>
-#include <QGuiApplication>
+#include <QApplication>
 #include <QOpenGLContext>
 
 
@@ -31,10 +31,15 @@ void Window::keyPressEvent(QKeyEvent *e)
     switch ( e->key() )
     {
         case Qt::Key_Escape:
-            QGuiApplication::quit();
+            QApplication::quit();
             break;
 
         default:
             QWindow::keyPressEvent( e );
     }
+}
+
+void Window::hideEvent(QHideEvent *)
+{
+    QApplication::quit();
 }

@@ -29,6 +29,10 @@ private:
     Ui::MainWindow *ui;
     Window *mWindow;
     Qt3D::Quick::QQmlAspectEngine *mEngine;
+
+    // QWidget interface
+protected:
+    void closeEvent(QCloseEvent *) Q_DECL_OVERRIDE;
 };
 
 #endif // MAINWINDOW_H

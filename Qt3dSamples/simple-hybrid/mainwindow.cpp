@@ -36,9 +36,6 @@ MainWindow::MainWindow(QWidget *parent)
     // Window
     mWindow->resize(QSize(480, 320));
     mWindow->show();
-
-    QSharedPointer<Qt3D::QEntity> entity = mEngine->aspectEngine()->rootEntity();
-    connect(entity.data(), SIGNAL(button(QString)), this, SLOT(buttonPushed(QString)));
 }
 
 MainWindow::~MainWindow()
@@ -64,4 +61,10 @@ void MainWindow::on_radiusSpinBox_valueChanged(int arg1)
                                                Q_RETURN_ARG(QVariant, ret),
                                                Q_ARG(QVariant, QString("Hello, World!")));
     qDebug() << "echo return:" << ret;
+}
+
+
+void MainWindow::closeEvent(QCloseEvent *)
+{
+    QApplication::quit();
 }
