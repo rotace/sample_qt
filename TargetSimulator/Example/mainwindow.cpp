@@ -16,12 +16,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     mModel->setParent(this);
 
+    QWidget *topWidget = new QWidget;
+    QGridLayout *topLayout = new QGridLayout;
+    ui->centralWidget->layout()->addWidget(topWidget);
+    topWidget->setLayout(topLayout);
+
     mListView = new QListView();
-    ui->centralWidget->layout()->addWidget(mListView);
+    topLayout->addWidget(mListView, 0, 0);
     mListView->setModel(mModel);
 
     mMapView = new MapView();
-    ui->centralWidget->layout()->addWidget(mMapView);
+    topLayout->addWidget(mMapView, 0, 1);
     mMapView->setModel(mModel);
 
     qreal altitude = 3.0;
@@ -29,11 +34,11 @@ MainWindow::MainWindow(QWidget *parent)
     QSize pixelSize = QSize(480, 320);
 
     mCamView = new CameraView(altitude, elevAngleOfView, pixelSize);
-    ui->centralWidget->layout()->addWidget(mCamView);
+    topLayout->addWidget(mCamView, 1, 0);
     mCamView->setModel(mModel);
 
     mQmlCamView = new QmlCameraView(altitude, elevAngleOfView, pixelSize);
-    ui->centralWidget->layout()->addWidget(mQmlCamView);
+    topLayout->addWidget(mQmlCamView, 1, 1);
     mQmlCamView->setModel(mModel);
 
     mModel->setTarget(BaseTarget(-100,-0.0,0,+10));
@@ -90,28 +95,32 @@ void MainWindow::on_leftPushButton_clicked()
 {
     mAzim -= ui->tiltAngleStepDoubleSpinBox->value();
     mCamView->setCameraDirection(mAzim, mElev);
-    ui->statusBar->showMessage(QString("AZIM: %1 deg, ELEV: %2 deg").arg(mCamView->azim()).arg(mCamView->elev()));
+    mQmlCamView->setCameraDirection(mAzim, mElev);
+    ui->statusBar->showMessage(QString("AZIM: %1 deg, ELEV: %2 deg").arg(mQmlCamView->azim()).arg(mQmlCamView->elev()));
 }
 
 void MainWindow::on_rightPushButton_clicked()
 {
     mAzim += ui->tiltAngleStepDoubleSpinBox->value();
     mCamView->setCameraDirection(mAzim, mElev);
-    ui->statusBar->showMessage(QString("AZIM: %1 deg, ELEV: %2 deg").arg(mCamView->azim()).arg(mCamView->elev()));
+    mQmlCamView->setCameraDirection(mAzim, mElev);
+    ui->statusBar->showMessage(QString("AZIM: %1 deg, ELEV: %2 deg").arg(mQmlCamView->azim()).arg(mQmlCamView->elev()));
 }
 
 void MainWindow::on_upPushButton_clicked()
 {
     mElev += ui->tiltAngleStepDoubleSpinBox->value();
     mCamView->setCameraDirection(mAzim, mElev);
-    ui->statusBar->showMessage(QString("AZIM: %1 deg, ELEV: %2 deg").arg(mCamView->azim()).arg(mCamView->elev()));
+    mQmlCamView->setCameraDirection(mAzim, mElev);
+    ui->statusBar->showMessage(QString("AZIM: %1 deg, ELEV: %2 deg").arg(mQmlCamView->azim()).arg(mQmlCamView->elev()));
 }
 
 void MainWindow::on_downPushButton_clicked()
 {
     mElev -= ui->tiltAngleStepDoubleSpinBox->value();
     mCamView->setCameraDirection(mAzim, mElev);
-    ui->statusBar->showMessage(QString("AZIM: %1 deg, ELEV: %2 deg").arg(mCamView->azim()).arg(mCamView->elev()));
+    mQmlCamView->setCameraDirection(mAzim, mElev);
+    ui->statusBar->showMessage(QString("AZIM: %1 deg, ELEV: %2 deg").arg(mQmlCamView->azim()).arg(mQmlCamView->elev()));
 }
 
 void MainWindow::on_togglePushButton_clicked()

@@ -1,18 +1,21 @@
+import QtQuick 2.0
 import Qt3D 2.0
 import Qt3D.Renderer 2.0
-import QtQuick 2.5 as QQ
 
 Entity {
     id: sceneRoot
 
-    property alias aspectRatio: camera.aspectRatio
-
     // c++ IF (signal)   qml->c++ (not used)
     signal signalOccured(string message);
-    // c++ IF (property) c++->qml
-    property int radius: 5
-    // c++ IF (function) c++->qml
 
+    // c++ IF (property) c++->qml
+    property alias origin:      camera.position
+    property alias viewCenter:  camera.viewCenter
+    property alias fieldOfView: camera.fieldOfView
+    property alias aspectRatio: camera.aspectRatio
+    property double altitude: 3.0
+
+    // c++ IF (function) c++->qml
     function echo(text)
     {
         console.log("fieldOfView:", camera.fieldOfView)
@@ -24,12 +27,12 @@ Entity {
         id: camera
         projectionType: CameraLens.PerspectiveProjection
         fieldOfView: 45
-        aspectRatio: 16/9
-        nearPlane : 0.1
-        farPlane : 1000.0
-        position: Qt.vector3d( 0.0, 0.0, -40.0 )
-        upVector: Qt.vector3d( 0.0, 1.0, 0.0 )
-        viewCenter: Qt.vector3d( 0.0, 0.0, 0.0 )
+        aspectRatio: 1.0
+        nearPlane : 1.0
+        farPlane : 5000.0
+        position: Qt.vector3d( 0.0, 0.0, parent.altitude )
+        upVector: Qt.vector3d( 0.0, 0.0, 1.0 )
+        viewCenter: Qt.vector3d( 0.0, 1.0, parent.altitude )
     }
 
     Configuration  {
@@ -49,62 +52,47 @@ Entity {
         id: material
     }
 
-    Entity {
-        id: torusEntity
-
-        TorusMesh {
-            id: torusMesh
-            radius: sceneRoot.radius
-            minorRadius: 1
-            rings: 100
-            slices: 20
-        }
-
-        Transform {
-            id: torusTransform
-            Scale { scale3D: Qt.vector3d(1.5, 1, 0.5) }
-            Rotate {
-                angle: 45
-                axis: Qt.vector3d(1, 0, 0)
-            }
-        }
-
-        components: [ torusMesh, material, torusTransform ]
+    function insertTarget(i)
+    {
+        console.log("insertTarget")
+        targetModel.insert(i, {"x":0.0, "y":0.0})
+    }
+    function updateTarget(i, p)
+    {
+        console.log("updateTarget")
+        targetModel.setProperty(i, "x", p.x)
+        targetModel.setProperty(i, "y", p.y)
+    }
+    function removeTarget(i)
+    {
+        console.log("removeTarget")
+        targetModel.remove(i)
     }
 
+    ListModel {id: targetModel }
 
+    NodeInstantiator {
+        model: targetModel
 
-    Entity {
-        id: sphereEntity
+        Entity {
 
-        SphereMesh {
-            id: sphereMesh
-            radius: sceneRoot.radius
-        }
-
-        Transform {
-            id: sphereTransform
-            Translate {
-                translation: Qt.vector3d(20+sceneRoot.radius, 0, 0)
+            SphereMesh {
+                id: targetMesh
+                radius: 3
             }
 
-            Rotate {
-                id: sphereRotation
-                axis: Qt.vector3d(0, 1, 0)
+            Transform {
+                id: targetTrans
+                Translate {
+                    translation: Qt.vector3d(x, y, 0)
+                }
+
+                Rotate {
+                    id: targetRotate
+                    axis: Qt.vector3d(0, 0, 1)
+                }
             }
+            components: [ targetMesh, targetTrans ]
         }
-
-        QQ.NumberAnimation {
-            target: sphereRotation
-            property: "angle"
-            duration: 10000
-            from: 0
-            to: 360
-
-            loops: QQ.Animation.Infinite
-            running: true
-        }
-
-        components: [ sphereMesh, material, sphereTransform ]
     }
 }

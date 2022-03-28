@@ -56,39 +56,69 @@ QmlCameraView::~QmlCameraView()
 
 void QmlCameraView::updateView()
 {
-
 }
 
 qreal QmlCameraView::azim() const
 {
-
+    QSharedPointer<Qt3D::QEntity> entity = mEngine->aspectEngine()->rootEntity();
+    QVector3D origin = entity->property("origin").value<QVector3D>();
+    QVector3D center = entity->property("viewCenter").value<QVector3D>();
+    QVector3D delta = center - origin;
+    return qRadiansToDegrees(qAtan2(delta.x(), delta.y()));
 }
 
 qreal QmlCameraView::elev() const
 {
-
+    QSharedPointer<Qt3D::QEntity> entity = mEngine->aspectEngine()->rootEntity();
+    QVector3D origin = entity->property("origin").value<QVector3D>();
+    QVector3D center = entity->property("viewCenter").value<QVector3D>();
+    QVector3D delta = center - origin;
+    return qRadiansToDegrees(qAsin(delta.z()));
 }
 
 void QmlCameraView::setCameraDirection(qreal azim, qreal elev)
 {
-//    QVariant ret;
-//    bool isSuccess = QMetaObject::invokeMethod(mEngine->aspectEngine()->rootEntity().data(),
-//                                               "echo",
-//                                               Qt::DirectConnection,
-//                                               Q_RETURN_ARG(QVariant, ret),
-//                                               Q_ARG(QVariant, QString("Hello, World!")));
-//    qDebug() << "echo return:" << ret;
+    QSharedPointer<Qt3D::QEntity> entity = mEngine->aspectEngine()->rootEntity();
+    QVector3D center(qSin(qDegreesToRadians(azim)) * qCos(qDegreesToRadians(elev)),
+                     qCos(qDegreesToRadians(azim)) * qCos(qDegreesToRadians(elev)),
+                     qSin(qDegreesToRadians(elev)) + entity->property("altitude").toReal()
+                     );
+    entity->setProperty("viewCenter", QVariant::fromValue<QVector3D>(center));
 }
 
 
 void QmlCameraView::updateTarget(int i, QVariant &v)
 {
+    if( !v.isValid() || !v.canConvert<BaseTarget>() ) return;
+    BaseTarget t = v.value<BaseTarget>();
+    QVariant ret;
+    bool isSuccess = QMetaObject::invokeMethod(mEngine->aspectEngine()->rootEntity().data(),
+                                               "updateTarget",
+                                               Qt::DirectConnection,
+                                               Q_RETURN_ARG(QVariant, ret),
+                                               Q_ARG(QVariant, i),
+                                               Q_ARG(QVariant, QPointF(t.posX(), t.posY())));
+    qDebug() << "echo return:" << ret;
 }
 
 void QmlCameraView::insertTarget(int i)
 {
+    QVariant ret;
+    bool isSuccess = QMetaObject::invokeMethod(mEngine->aspectEngine()->rootEntity().data(),
+                                               "insertTarget",
+                                               Qt::DirectConnection,
+                                               Q_RETURN_ARG(QVariant, ret),
+                                               Q_ARG(QVariant, i));
+    qDebug() << "echo return:" << ret;
 }
 
 void QmlCameraView::removeTarget(int i)
 {
+    QVariant ret;
+    bool isSuccess = QMetaObject::invokeMethod(mEngine->aspectEngine()->rootEntity().data(),
+                                               "removeTarget",
+                                               Qt::DirectConnection,
+                                               Q_RETURN_ARG(QVariant, ret),
+                                               Q_ARG(QVariant, i));
+    qDebug() << "echo return:" << ret;
 }
