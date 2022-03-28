@@ -1,6 +1,6 @@
+import QtQuick 2.0
 import Qt3D 2.0
 import Qt3D.Renderer 2.0
-import QtQuick 2.5 as QQ2
 
 Entity {
     id: sceneRoot
@@ -61,37 +61,44 @@ Entity {
 
 
 
-    Entity {
-        id: sphereEntity
+    NodeInstantiator {
+        id: collection
+        model: 3
 
-        SphereMesh {
-            id: sphereMesh
-            radius: 3
-        }
+        delegate: Entity {
+            id: sphereEntity
 
-        Transform {
-            id: sphereTransform
-            Translate {
-                translation: Qt.vector3d(20, 0, 0)
+            SphereMesh {
+                id: sphereMesh
+                radius: 1+index
             }
 
-            Rotate {
-                id: sphereRotation
-                axis: Qt.vector3d(0, 1, 0)
+            Transform {
+                id: sphereTransform
+                Translate {
+                    translation: Qt.vector3d(20, 0, 0)
+                }
+
+                Rotate {
+                    id: sphereRotation
+                    axis: Qt.vector3d(0, 1, 0)
+                }
             }
+            NumberAnimation {
+                target: sphereRotation
+                property: "angle"
+                duration: 10000
+                from: 60*index
+                to: 360 + 60*index
+
+                loops: Animation.Infinite
+                running: true
+            }
+
+            components: [ sphereMesh, material, sphereTransform ]
         }
 
-        QQ2.NumberAnimation {
-            target: sphereRotation
-            property: "angle"
-            duration: 10000
-            from: 0
-            to: 360
-
-            loops: QQ2.Animation.Infinite
-            running: true
-        }
-
-        components: [ sphereMesh, material, sphereTransform ]
+        onObjectAdded: console.log("object added")
+        onObjectRemoved: console.log("object deleted")
     }
 }
