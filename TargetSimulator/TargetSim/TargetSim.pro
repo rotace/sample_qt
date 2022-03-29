@@ -9,6 +9,8 @@ QT       += widgets network sql 3dcore 3drenderer 3dinput 3dquick
 TARGET = TargetSim
 TEMPLATE = lib
 
+CONFIG += c++11
+
 DEFINES += TARGETSIM_LIBRARY
 
 SOURCES += targetsim.cpp \
@@ -19,8 +21,7 @@ SOURCES += targetsim.cpp \
     mapview.cpp \
     mapviewtarget.cpp \
     cameraview.cpp \
-    qmlcameraview.cpp \
-    qmlwindow.cpp
+    camerawindow.cpp
 
 HEADERS += targetsim.h\
         targetsim_global.h \
@@ -31,8 +32,7 @@ HEADERS += targetsim.h\
     mapview.h \
     mapviewtarget.h \
     cameraview.h \
-    qmlcameraview.h \
-    qmlwindow.h
+    camerawindow.h
 
 unix {
     target.path = /usr/lib

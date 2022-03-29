@@ -1,10 +1,10 @@
-#include "qmlwindow.h"
+#include "camerawindow.h"
 
 #include <QtGui>
 #include <QtCore>
 #include <QtWidgets>
 
-QmlWindow::QmlWindow(QScreen *screen)
+CameraWindow::CameraWindow(QScreen *screen)
     : QWindow(screen)
 {
     setSurfaceType(QSurface::OpenGLSurface);
@@ -23,13 +23,13 @@ QmlWindow::QmlWindow(QScreen *screen)
     create();
 }
 
-void QmlWindow::setEntity(QSharedPointer<Qt3D::QEntity> entity)
+void CameraWindow::setEntity(QSharedPointer<Qt3D::QEntity> entity)
 {
     mEntity = entity;
 }
 
 
-void QmlWindow::keyPressEvent(QKeyEvent *e)
+void CameraWindow::keyPressEvent(QKeyEvent *e)
 {
     switch ( e->key() )
      {
@@ -43,7 +43,7 @@ void QmlWindow::keyPressEvent(QKeyEvent *e)
 }
 
 
-void QmlWindow::resizeEvent(QResizeEvent *)
+void CameraWindow::resizeEvent(QResizeEvent *)
 {
     if( mEntity.isNull() ) return;
     qDebug() << "setAspectRatio:" << mEntity->setProperty("aspectRatio", float(this->width()) / float(this->height()));

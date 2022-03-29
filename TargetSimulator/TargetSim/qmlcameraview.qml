@@ -5,23 +5,12 @@ import Qt3D.Renderer 2.0
 Entity {
     id: sceneRoot
 
-    // c++ IF (signal)   qml->c++ (not used)
-    signal signalOccured(string message);
-
     // c++ IF (property) c++->qml
     property alias origin:      camera.position
     property alias viewCenter:  camera.viewCenter
     property alias fieldOfView: camera.fieldOfView
     property alias aspectRatio: camera.aspectRatio
     property double altitude: 3.0
-
-    // c++ IF (function) c++->qml
-    function echo(text)
-    {
-        console.log("fieldOfView:", camera.fieldOfView)
-        console.log("aspectRatio:", camera.aspectRatio)
-        return "returnValue";
-    }
 
     Camera {
         id: camera

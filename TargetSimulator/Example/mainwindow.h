@@ -1,12 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QtCore>
 #include <QtWidgets>
 
 #include "simulatormodel.h"
 #include "mapview.h"
 #include "cameraview.h"
-#include "qmlcameraview.h"
 
 namespace Ui {
 class MainWindow;
@@ -47,8 +47,7 @@ private:
     Ui::MainWindow *ui;
     SimulatorModel *mModel;
     QListView *mListView;
-    QmlCameraView * mQmlCamView;
-    CameraView *mCamView;
+    CameraView * mCamView;
     MapView *mMapView;
     qreal mAzim;
     qreal mElev;

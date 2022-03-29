@@ -1,132 +1,123 @@
 #include "cameraview.h"
 
+#include <QtWidgets>
 #include <Qt3DCore>
 #include <Qt3DRenderer>
 #include <Qt3DInput/QInputAspect>
-#include <QPropertyAnimation>
-
-#include <QtCore>
-#include <QtMath>
 
 CameraView::CameraView(QWidget *parent)
-    : CameraView(3.0, 45.0, QSize(480, 320), false, parent)
+    : CameraView(3.0, 45.0, QSize(480, 320), false, false, parent)
 {
+
 }
 
-CameraView::CameraView(qreal altitude, qreal elevAngleOfView, QSize pixelSize, bool isInputEnabled, QWidget *parent)
+CameraView::CameraView(qreal altitude, qreal elevAngleOfView, QSize pixelSize, bool isInputEnabled, bool isWindowEnabled, QWidget *parent)
     : BaseView(parent)
     , mAlt(altitude)
-    , mView(new QGraphicsView(this))
-    , mItem(new QGraphicsPixmapItem)
-    , mWindow(new Qt3D::QWindow)
-    , mCamera(mWindow->defaultCamera())
-    , mRootEntity(new Qt3D::QEntity)
-    , mMaterial(new Qt3D::QPhongMaterial(mRootEntity))
+    , mWindow(new CameraWindow)
+    , mEngine(new Qt3D::Quick::QQmlAspectEngine)
 {
+    // Widget
     QHBoxLayout *topLayout = new QHBoxLayout;
     this->setLayout(topLayout);
 
-    mView->setScene(new QGraphicsScene);
-    mView->setDragMode(QGraphicsView::ScrollHandDrag);
-    mView->scene()->addItem(mItem);
-    topLayout->addWidget(mView);
+    // Quick
+    if (     true     ) mEngine->aspectEngine()->registerAspect(new Qt3D::QRenderAspect);
+    if (isInputEnabled) mEngine->aspectEngine()->registerAspect(new Qt3D::QInputAspect);
+    mEngine->aspectEngine()->initialize();
 
-    if(isInputEnabled) {
-        Qt3D::QInputAspect *input = new Qt3D::QInputAspect;
-        mWindow->registerAspect(input);
-        input->setCamera(mCamera);
+    QVariantMap data;
+    data.insert(QStringLiteral("surface"), QVariant::fromValue(static_cast<QSurface *>(mWindow)));
+    data.insert(QStringLiteral("eventSource"), QVariant::fromValue(mWindow));
+    mEngine->aspectEngine()->setData(data);
+
+    mEngine->setSource(QUrl("qrc:/qmlcameraview.qml"));
+    mWindow->setEntity(mEngine->aspectEngine()->rootEntity());
+
+    if (isWindowEnabled) {
+        mWindow->setFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint );
+        mWindow->resize(pixelSize);
+        mWindow->setMinimumSize(pixelSize);
+        mWindow->setMaximumSize(pixelSize);
+        mWindow->show();
+    } else {
+        topLayout->addWidget(QWidget::createWindowContainer(mWindow, this));
     }
-
-    mCamera->lens()->setPerspectiveProjection(elevAngleOfView, 1.0f, 1.0f, 5000.0f);
-    mCamera->setPosition(QVector3D(0, 0, mAlt));
-    mCamera->setUpVector(QVector3D(0, 0, 1));
-    mCamera->setViewCenter(QVector3D(0, 1, mAlt));
-
-    mWindow->setRootEntity(mRootEntity);
-    mWindow->resize(pixelSize);
-    mWindow->setMinimumSize(pixelSize);
-    mWindow->setMaximumSize(pixelSize);
-    mWindow->setFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint );
-    mWindow->show();
 }
 
 CameraView::~CameraView()
 {
-    qDebug() << "CameraView Destructor Called!";
+    qDebug() << "QmlCameraView Destructor Called!";
     delete mWindow;
+    delete mEngine;
 }
 
 qreal CameraView::azim() const
 {
-    QVector3D delta = mCamera->viewCenter() - mCamera->position();
+    QSharedPointer<Qt3D::QEntity> entity = mEngine->aspectEngine()->rootEntity();
+    QVector3D origin = entity->property("origin").value<QVector3D>();
+    QVector3D center = entity->property("viewCenter").value<QVector3D>();
+    QVector3D delta = center - origin;
     return qRadiansToDegrees(qAtan2(delta.x(), delta.y()));
 }
 
 qreal CameraView::elev() const
 {
-    QVector3D delta = mCamera->viewCenter() - mCamera->position();
+    QSharedPointer<Qt3D::QEntity> entity = mEngine->aspectEngine()->rootEntity();
+    QVector3D origin = entity->property("origin").value<QVector3D>();
+    QVector3D center = entity->property("viewCenter").value<QVector3D>();
+    QVector3D delta = center - origin;
     return qRadiansToDegrees(qAsin(delta.z()));
+}
+
+QImage CameraView::image() const
+{
+    return mWindow->screen()->grabWindow(mWindow->winId()).toImage();
 }
 
 void CameraView::setCameraDirection(qreal azim, qreal elev)
 {
-    mCamera->setViewCenter(QVector3D(
-        qSin(qDegreesToRadians(azim)) * qCos(qDegreesToRadians(elev)),
-        qCos(qDegreesToRadians(azim)) * qCos(qDegreesToRadians(elev)),
-        qSin(qDegreesToRadians(elev)) + mAlt
-    ));
-
-    this->updateView();
+    QSharedPointer<Qt3D::QEntity> entity = mEngine->aspectEngine()->rootEntity();
+    QVector3D center(qSin(qDegreesToRadians(azim)) * qCos(qDegreesToRadians(elev)),
+                     qCos(qDegreesToRadians(azim)) * qCos(qDegreesToRadians(elev)),
+                     qSin(qDegreesToRadians(elev)) + entity->property("altitude").toReal()
+                     );
+    entity->setProperty("viewCenter", QVariant::fromValue<QVector3D>(center));
 }
 
-void CameraView::updateView()
-{
-    qint32 sleep_msec = 10;
-    QEventLoop loop;
-    QTimer::singleShot( sleep_msec, &loop, SLOT( quit() ) );
-    loop.exec();
-    mImage = mWindow->screen()->grabWindow(mWindow->winId()).toImage().convertToFormat(QImage::Format_Grayscale8);
-    mItem->setPixmap(QPixmap::fromImage(mImage));
-}
 
 void CameraView::updateTarget(int i, QVariant &v)
 {
     if( !v.isValid() || !v.canConvert<BaseTarget>() ) return;
     BaseTarget t = v.value<BaseTarget>();
-    mTranslateList[i]->setTranslation(QVector3D(t.posX(), t.posY(), 0.0));
-
-    this->updateView();
+    QVariant ret;
+    bool isSuccess = QMetaObject::invokeMethod(mEngine->aspectEngine()->rootEntity().data(),
+                                               "updateTarget",
+                                               Qt::DirectConnection,
+                                               Q_RETURN_ARG(QVariant, ret),
+                                               Q_ARG(QVariant, i),
+                                               Q_ARG(QVariant, QPointF(t.posX(), t.posY())));
+    qDebug() << "echo return:" << ret;
 }
 
 void CameraView::insertTarget(int i)
 {
-    Qt3D::QEntity *entity = new Qt3D::QEntity(mRootEntity);
-
-    Qt3D::QSphereMesh *mesh = new Qt3D::QSphereMesh;
-    mesh->setRadius(3);
-
-    Qt3D::QTransform *trans = new Qt3D::QTransform;
-    Qt3D::QRotateTransform *rotate = new Qt3D::QRotateTransform;
-    Qt3D::QTranslateTransform *move = new Qt3D::QTranslateTransform;
-    rotate->setAxis(QVector3D(0, 1, 0));
-    rotate->setAngleDeg(0.0);
-    move->setTranslation(QVector3D(0, 0, 0));
-
-    trans->addTransform(rotate);
-    trans->addTransform(move);
-
-    entity->addComponent(mesh);
-    entity->addComponent(trans);
-    entity->addComponent(mMaterial);
-
-    mEntityList.insert(i, entity);
-    mRotateList.insert(i, rotate);
-    mTranslateList.insert(i, move);
+    QVariant ret;
+    bool isSuccess = QMetaObject::invokeMethod(mEngine->aspectEngine()->rootEntity().data(),
+                                               "insertTarget",
+                                               Qt::DirectConnection,
+                                               Q_RETURN_ARG(QVariant, ret),
+                                               Q_ARG(QVariant, i));
+    qDebug() << "echo return:" << ret;
 }
 
 void CameraView::removeTarget(int i)
 {
-    mEntityList.takeAt(i)->~QEntity();
-    mRotateList.removeAt(i);
-    mTranslateList.removeAt(i);
+    QVariant ret;
+    bool isSuccess = QMetaObject::invokeMethod(mEngine->aspectEngine()->rootEntity().data(),
+                                               "removeTarget",
+                                               Qt::DirectConnection,
+                                               Q_RETURN_ARG(QVariant, ret),
+                                               Q_ARG(QVariant, i));
+    qDebug() << "echo return:" << ret;
 }

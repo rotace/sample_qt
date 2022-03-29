@@ -5,13 +5,13 @@
 #include <QSharedPointer>
 #include <Qt3DCore/QEntity>
 
-class QmlWindow : public QWindow
+class CameraWindow : public QWindow
 {
     Q_OBJECT
     QSharedPointer<Qt3D::QEntity> mEntity;
 
 public:
-    explicit QmlWindow(QScreen *screen = 0);
+    explicit CameraWindow(QScreen *screen = 0);
     void setEntity(QSharedPointer<Qt3D::QEntity> entity);
 
 

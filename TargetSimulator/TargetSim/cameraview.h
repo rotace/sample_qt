@@ -1,50 +1,33 @@
-#ifndef CAMERAVIEW_H
-#define CAMERAVIEW_H
+#ifndef QMLCAMERAVIEW_H
+#define QMLCAMERAVIEW_H
 
 #include "baseview.h"
 
-#include <QtWidgets>
-#include <Qt3DRenderer/QWindow>
-#include <Qt3DRenderer/QMaterial>
-#include <Qt3DCore/QEntity>
-#include <Qt3DCore/QScaleTransform>
-#include <Qt3DCore/QRotateTransform>
-#include <Qt3DCore/QTranslateTransform>
+#include <QImage>
+#include <QGraphicsView>
+#include <QGraphicsPixmapItem>
+#include <Qt3DQuick/QQmlAspectEngine>
+#include "camerawindow.h"
 
 class CameraView : public BaseView
 {
     Q_OBJECT
     qreal mAlt;
-    QImage mImage;
-    QGraphicsView *mView;
-    QGraphicsPixmapItem *mItem;
-    Qt3D::QWindow *mWindow;
-    Qt3D::QCamera *mCamera;
-    Qt3D::QEntity *mRootEntity;
-    Qt3D::QMaterial *mMaterial;
-    QList<Qt3D::QEntity*> mEntityList;
-    QList<Qt3D::QRotateTransform*> mRotateList;
-    QList<Qt3D::QTranslateTransform*> mTranslateList;
+    CameraWindow *mWindow;
+    Qt3D::Quick::QQmlAspectEngine *mEngine;
 
 public:
     explicit CameraView(QWidget *parent = 0);
-    explicit CameraView(qreal altitude, qreal elevAngleOfView, QSize pixelSize, bool isInputEnabled = false, QWidget *parent = 0);
+    explicit CameraView(qreal altitude, qreal elevAngleOfView, QSize pixelSize, bool isInputEnabled = false, bool isWindowEnabled = false, QWidget *parent = 0);
     ~CameraView();
     qreal azim() const;
     qreal elev() const;
-    QImage image() const { return mImage; }
+    QImage image() const;
     void close() { mWindow->close(); }
     void hide() { mWindow->setVisible(false); }
     void show() { mWindow->setVisible(true); }
     bool isVisible() { return mWindow->isVisible(); }
     void setCameraDirection(qreal azim, qreal elev);
-
-private:
-    void updateView();
-
-signals:
-
-public slots:
 
     // BaseView interface
 public:
@@ -53,4 +36,4 @@ public:
     void removeTarget(int i) Q_DECL_OVERRIDE;
 };
 
-#endif // CAMERAVIEW_H
+#endif // QMLCAMERAVIEW_H
