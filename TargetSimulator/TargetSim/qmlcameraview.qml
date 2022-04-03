@@ -37,8 +37,25 @@ Entity {
         }
     ]
 
-    PhongMaterial {
-        id: material
+    Entity {
+
+        PhongMaterial {
+            id: cMate
+        }
+
+        Transform {
+            id: cTrans
+            Translate {
+                translation: Qt.vector3d(0, 0, 0)
+            }
+        }
+
+        CuboidMesh {
+            id: cMesh
+            xExtent: 5000
+            yExtent: 5000
+        }
+        components: [cTrans, cMate, cMesh]
     }
 
     function insertTarget(i)
@@ -65,6 +82,10 @@ Entity {
 
         Entity {
 
+            PhongMaterial {
+                id: targetMaterial
+            }
+
             SphereMesh {
                 id: targetMesh
                 radius: 3
@@ -81,7 +102,11 @@ Entity {
                     axis: Qt.vector3d(0, 0, 1)
                 }
             }
-            components: [ targetMesh, targetTrans ]
+            components: [
+                targetMesh,
+                targetTrans,
+                targetMaterial
+            ]
         }
     }
 }

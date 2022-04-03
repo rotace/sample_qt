@@ -43,6 +43,9 @@ CameraView::CameraView(qreal altitude, qreal elevAngleOfView, QSize pixelSize, b
     } else {
         topLayout->addWidget(QWidget::createWindowContainer(mWindow, this));
     }
+
+    // setFieldOfView
+    qDebug() << "setFieldOfView:" << mEngine->aspectEngine()->rootEntity()->setProperty("fieldOfView", elevAngleOfView);
 }
 
 CameraView::~CameraView()
