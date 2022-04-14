@@ -23,6 +23,9 @@
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QPushButton" name="addTcpPushButton">
+         <property name="toolTip">
+          <string/>
+         </property>
          <property name="text">
           <string>Add TCP</string>
          </property>
