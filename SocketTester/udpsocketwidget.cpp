@@ -43,7 +43,7 @@ UdpSocketWidget::UdpSocketWidget(QWidget *parent)
 
         switch(mUdpSock->state()){
         case QAbstractSocket::UnconnectedState:
-            qDebug().noquote() << this->peerInfo(mUdpSock) << "Binding... ";
+            qDebug() << this->peerInfo(mUdpSock) << "Binding... ";
             mUdpSock->bind(mLocalAddress, mLocalPort);
             break;
         case QAbstractSocket::HostLookupState:
@@ -53,7 +53,7 @@ UdpSocketWidget::UdpSocketWidget(QWidget *parent)
         case QAbstractSocket::ConnectedState:
             break;
         case QAbstractSocket::BoundState:
-            qDebug().noquote() << this->peerInfo(mUdpSock) << "Unbinding... ";
+            qDebug() << this->peerInfo(mUdpSock) << "Unbinding... ";
             mUdpSock->disconnectFromHost();
             break;
         case QAbstractSocket::ListeningState:
@@ -96,7 +96,7 @@ UdpSocketWidget::UdpSocketWidget(QWidget *parent)
         QByteArray datagram;
         datagram.append(this->sendMessage()+"\n");
         mUdpSock->writeDatagram(datagram, mPeerAddress, mPeerPort);
-        qDebug().noquote() << this->localInfo(mUdpSock) << "->" << this->sockInfo(mPeerAddress, mPeerPort) << this->sendMessage();
+        qDebug() << this->localInfo(mUdpSock) << "->" << this->sockInfo(mPeerAddress, mPeerPort) << this->sendMessage();
     });
 
     connect(mUdpSock, static_cast<void (QUdpSocket::*)()>(&QUdpSocket::readyRead), [=](){
@@ -105,17 +105,18 @@ UdpSocketWidget::UdpSocketWidget(QWidget *parent)
             datagram.resize(mUdpSock->pendingDatagramSize());
             mUdpSock->readDatagram(datagram.data(), datagram.size(), &mPeerAddress, &mPeerPort);
             this->setRecvMessage(datagram);
-            qDebug().noquote() << this->localInfo(mUdpSock) << "<-" << this->peerInfo(mUdpSock) << QString(datagram).trimmed();
+            qDebug() << this->localInfo(mUdpSock) << "<-" << this->peerInfo(mUdpSock) << QString(datagram).trimmed();
         }
     });
 
     connect(mUdpSock, &QUdpSocket::stateChanged, [=](QUdpSocket::SocketState state){
-        qDebug().noquote() << this->peerInfo(mUdpSock) << state;
+        qDebug() << this->peerInfo(mUdpSock) << state;
 
         switch(state){
         case QAbstractSocket::UnconnectedState:
             bindButton->setText("Bind");
             joinButton->setEnabled(false);
+            multicastListWidget->clear();
             break;
         case QAbstractSocket::HostLookupState:
             break;

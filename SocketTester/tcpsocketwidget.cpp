@@ -21,7 +21,7 @@ TcpSocketWidget::TcpSocketWidget(QWidget *parent)
 
         switch(mTcpSock->state()) {
         case QAbstractSocket::UnconnectedState:
-            qDebug().noquote() << this->peerInfo(mTcpSock) << "Connecting... ";
+            qDebug() << this->peerInfo(mTcpSock) << "Connecting... ";
             mTcpSock->bind(mLocalAddress, mLocalPort);
             mTcpSock->connectToHost(mPeerAddress, mPeerPort);
             break;
@@ -30,7 +30,7 @@ TcpSocketWidget::TcpSocketWidget(QWidget *parent)
         case QAbstractSocket::ConnectingState:
             break;
         case QAbstractSocket::ConnectedState:
-            qDebug().noquote() << this->peerInfo(mTcpSock) << "Disconnecting... ";
+            qDebug() << this->peerInfo(mTcpSock) << "Disconnecting... ";
             mTcpSock->disconnectFromHost();
             break;
         case QAbstractSocket::BoundState:
@@ -53,7 +53,7 @@ TcpSocketWidget::TcpSocketWidget(QWidget *parent)
             break;
         case QAbstractSocket::ConnectedState:
             mTcpSock->write( (this->sendMessage()+"\n").toLocal8Bit() );
-            qDebug().noquote() << this->localInfo(mTcpSock) << "->" << this->peerInfo(mTcpSock) << this->sendMessage();
+            qDebug() << this->localInfo(mTcpSock) << "->" << this->peerInfo(mTcpSock) << this->sendMessage();
             break;
         case QAbstractSocket::BoundState:
             break;
@@ -69,12 +69,12 @@ TcpSocketWidget::TcpSocketWidget(QWidget *parent)
         while(mTcpSock->bytesAvailable()){
             QByteArray bytes = mTcpSock->readAll();
             this->setRecvMessage(bytes);
-            qDebug().noquote() << this->localInfo(mTcpSock) << "<-" << this->peerInfo(mTcpSock) << QString(bytes).trimmed();
+            qDebug() << this->localInfo(mTcpSock) << "<-" << this->peerInfo(mTcpSock) << QString(bytes).trimmed();
         }
     });
 
     connect(mTcpSock, &QTcpSocket::stateChanged, [=](QTcpSocket::SocketState state){
-        qDebug().noquote() << this->peerInfo(mTcpSock) << state;
+        qDebug() << this->peerInfo(mTcpSock) << state;
 
         switch(state){
         case QAbstractSocket::UnconnectedState:
