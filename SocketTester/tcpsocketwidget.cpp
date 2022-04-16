@@ -44,8 +44,6 @@ TcpSocketWidget::TcpSocketWidget(QWidget *parent)
 
     connect(sendButton, &QPushButton::clicked, [=](){
 
-        QString message("Hello World TCP\n");
-
         switch (mTcpSock->state()) {
         case QAbstractSocket::UnconnectedState:
             break;
@@ -54,8 +52,8 @@ TcpSocketWidget::TcpSocketWidget(QWidget *parent)
         case QAbstractSocket::ConnectingState:
             break;
         case QAbstractSocket::ConnectedState:
-            mTcpSock->write( message.toLocal8Bit() );
-            qDebug().noquote() << this->localInfo(mTcpSock) << "->" << this->peerInfo(mTcpSock) << message.trimmed();
+            mTcpSock->write( (this->sendMessage()+"\n").toLocal8Bit() );
+            qDebug().noquote() << this->localInfo(mTcpSock) << "->" << this->peerInfo(mTcpSock) << this->sendMessage();
             break;
         case QAbstractSocket::BoundState:
             break;
@@ -70,7 +68,8 @@ TcpSocketWidget::TcpSocketWidget(QWidget *parent)
     connect(mTcpSock, static_cast<void (QTcpSocket::*)()>(&QTcpSocket::readyRead), [=](){
         while(mTcpSock->bytesAvailable()){
             QByteArray bytes = mTcpSock->readAll();
-            qDebug().noquote() << this->localInfo(mTcpSock) << "<-" << this->peerInfo(mTcpSock) << bytes;
+            this->setRecvMessage(bytes);
+            qDebug().noquote() << this->localInfo(mTcpSock) << "<-" << this->peerInfo(mTcpSock) << QString(bytes).trimmed();
         }
     });
 
