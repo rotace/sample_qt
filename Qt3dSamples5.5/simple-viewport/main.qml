@@ -30,8 +30,8 @@ Entity {
             id : frameGraph
 
             Viewport {
-                id : mainViewport
                 rect: Qt.rect(0, 0, 1, 1)
+                clearColor: "white"
 
                 ClearBuffer {
                     buffers : ClearBuffer.ColorDepthBuffer
@@ -39,22 +39,22 @@ Entity {
 
                 Viewport {
                     rect : Qt.rect(0, 0, 0.5, 0.5)
-                    CameraSelector {id : cameraSelectorTopLeftViewport; camera : cameraViewport1}
+                    CameraSelector { camera : cameraViewport1}
                 }
 
                 Viewport {
                     rect : Qt.rect(0.5, 0, 0.5, 0.5)
-                    CameraSelector {id : cameraSelectorTopRightViewport; camera : cameraViewport2}
+                    CameraSelector { camera : cameraViewport2}
                 }
 
                 Viewport {
                     rect : Qt.rect(0, 0.5, 0.5, 0.5)
-                    CameraSelector {id : cameraSelectorBottomLeftViewport; camera : cameraViewport3}
+                    CameraSelector { camera : cameraViewport3}
                 }
 
                 Viewport {
                     rect : Qt.rect(0.5, 0.5, 0.5, 0.5)
-                    CameraSelector {id : cameraSelectorBottomRightViewport; camera : cameraViewport4}
+                    CameraSelector { camera : cameraViewport4}
                 }
 
             }

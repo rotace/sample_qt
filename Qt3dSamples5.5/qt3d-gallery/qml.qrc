@@ -4,5 +4,17 @@
         <file>MeshTorusPanel.qml</file>
         <file>MeshSpherePanel.qml</file>
         <file>MaterialPhongPanel.qml</file>
+        <file>MeshCuboidPanel.qml</file>
+        <file>MeshCylinderPanel.qml</file>
+        <file>MeshPlanePanel.qml</file>
+        <file>MaterialGoochPanel.qml</file>
+        <file>MaterialDiffuseMapPanel.qml</file>
+        <file>assets/t1.png</file>
+        <file>assets/t2.png</file>
+        <file>assets/t3.png</file>
+        <file>MaterialDiffuseSpecularMapPanel.qml</file>
+        <file>MaterialNormalDiffuseMapPanel.qml</file>
+        <file>MaterialNormalDiffuseSpecularMapPanel.qml</file>
+        <file>MaterialNormalDiffuseMapAlphaPanel.qml</file>
     </qresource>
 </RCC>

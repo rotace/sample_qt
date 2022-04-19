@@ -16,9 +16,11 @@ ApplicationWindow {
 
     property var mesh
     property var material
-    property var trans
     function updateViewer() {
-        viewerEntity.components = [this.mesh, this.material, this.trans]
+        viewerEntity.components = [this.mesh, this.material, transform]
+    }
+    function updateScale(x, y, z) {
+        scale.scale3D = Qt.vector3d(x, y, z)
     }
 
     MessageDialog {
@@ -77,6 +79,7 @@ ApplicationWindow {
                     console.log("Scen3D:", scene3d.width, scene3d.height)
                     console.log("TabView", tabView.width, tabView.height)
                     console.log("Camera View Center:", camera.viewCenter)
+                    console.log("Scale:", scale.scale)
                 }
             }
             Item { Layout.fillWidth: true }
@@ -116,7 +119,6 @@ ApplicationWindow {
         anchors.margins: 10
         anchors.fill: parent
 
-
         Scene3D {
             id: scene3d
             Layout.fillWidth: true
@@ -136,7 +138,7 @@ ApplicationWindow {
                     aspectRatio: root.width/root.height
                     nearPlane : 0.1
                     farPlane : 1000.0
-                    position: Qt.vector3d( 0.0, 0.0, -50.0 )
+                    position: Qt.vector3d( 0.0, +20, -50.0 )
                     upVector: Qt.vector3d( 0.0, 1.0, 0.0 )
                     viewCenter: Qt.vector3d( 0.0, 0.0, 0.0 )
                 }
@@ -152,9 +154,9 @@ ApplicationWindow {
                 PlaneMesh { id: planeMesh }
 
                 // Material
-                PerVertexColorMaterial { id: perVertexColorMaterial }
                 GoochMaterial { id: goochMaterial }
                 PhongMaterial { id: phongMaterial }
+                PerVertexColorMaterial { id: perVertexColorMaterial }
                 DiffuseMapMaterial { id: diffuseMapMaterial }
                 DiffuseSpecularMapMaterial { id: diffuseSpecularMapMaterial }
                 NormalDiffuseMapMaterial { id: normalDiffuseMapMaterial }
@@ -165,11 +167,14 @@ ApplicationWindow {
                 Transform {
                     id: transform
                     Translate { translation: Qt.vector3d(0, 0, 0) }
-//                    Scale { scale3D: Qt.vector3d(1.5, 1, 0.5) }
-//                    Rotate {
-//                        angle: 45
-//                        axis: Qt.vector3d(1, 0, 0)
-//                    }
+                    Scale { id: scale }
+                    Rotate { id: rotate; axis: Qt.vector3d(0, 1, 0) }
+                }
+
+                SequentialAnimation {
+                    running : true
+                    loops: Animation.Infinite
+                    NumberAnimation {target : rotate; property : "angle"; to : 360; duration : 10000;}
                 }
 
                 Entity {
@@ -196,21 +201,21 @@ ApplicationWindow {
                     ComboBox {
                         Layout.fillWidth: true
                         model: [
-//                            "CylinderMesh",
-//                            "CuboidMesh",
                             "SphereMesh",
+                            "CylinderMesh",
+                            "CuboidMesh",
                             "TorusMesh",
-//                            "PlaneMesh",
+                            "PlaneMesh",
                         ]
                         onCurrentTextChanged: {
                             switch(currentText) {
                             case "CylinderMesh":
                                 root.mesh = cylinderMesh
-                                console.log("Not Implemented")
+                                meshLoader.source = "MeshCylinderPanel.qml"
                                 break;
                             case "CuboidMesh":
                                 root.mesh = cuboidMesh
-                                console.log("Not Implemented")
+                                meshLoader.source = "MeshCuboidPanel.qml"
                                 break;
                             case "SphereMesh":
                                 root.mesh = sphereMesh
@@ -222,7 +227,7 @@ ApplicationWindow {
                                 break;
                             case "PlaneMesh":
                                 root.mesh = planeMesh
-                                console.log("Not Implemented")
+                                meshLoader.source = "MeshPlanePanel.qml"
                                 break;
                             }
                             root.updateViewer()
@@ -258,13 +263,13 @@ ApplicationWindow {
                         Layout.fillWidth: true
                         model: [
                             "PhongMaterial",
-//                            "GoochMaterial",
+                            "GoochMaterial",
+                            "DiffuseMapMaterial",
+                            "DiffuseSpecularMapMaterial",
+                            "NormalDiffuseMapMaterial",
+                            "NormalDiffuseMapAlphaMaterial",
+                            "NormalDiffuseSpecularMapMaterial",
 //                            "PerVertexColorMaterial",
-//                            "DiffuseMapMaterial",
-//                            "DiffuseSpecularMapMaterial",
-//                            "NormalDiffuseMapMaterial",
-//                            "NormalDiffuseMapAlphaMaterial",
-//                            "NormalDiffuseSpecularMapMaterial",
                         ]
                         onCurrentTextChanged: {
                             switch(currentText) {
@@ -274,30 +279,30 @@ ApplicationWindow {
                                 break;
                             case "GoochMaterial":
                                 root.material = goochMaterial
-                                console.log("Not Implemented")
-                                break;
-                            case "PerVertexColorMaterial":
-                                root.material = perVertexColorMaterial
-                                console.log("Not Implemented")
+                                materialLoader.source = "MaterialGoochPanel.qml"
                                 break;
                             case "DiffuseMapMaterial":
                                 root.material = diffuseMapMaterial
-                                console.log("Not Implemented")
+                                materialLoader.source = "MaterialDiffuseMapPanel.qml"
                                 break;
                             case "DiffuseSpecularMapMaterial":
                                 root.material = diffuseSpecularMapMaterial
-                                console.log("Not Implemented")
+                                materialLoader.source = "MaterialDiffuseSpecularMapPanel.qml"
                                 break;
                             case "NormalDiffuseMapMaterial":
                                 root.material = normalDiffuseMapMaterial
-                                console.log("Not Implemented")
+                                materialLoader.source = "MaterialNormalDiffuseMapPanel.qml"
                                 break;
                             case "NormalDiffuseMapAlphaMaterial":
                                 root.material = normalDiffuseMapAlphaMaterial
-                                console.log("Not Implemented")
+                                materialLoader.source = "MaterialNormalDiffuseMapAlphaPanel.qml"
                                 break;
                             case "NormalDiffuseSpecularMapMaterial":
                                 root.material = normalDiffuseSpecularMapMaterial
+                                materialLoader.source = "MaterialNormalDiffuseSpecularMapPanel.qml"
+                                break;
+                            case "PerVertexColorMaterial":
+                                root.material = perVertexColorMaterial
                                 console.log("Not Implemented")
                                 break;
                             }
@@ -321,8 +326,63 @@ ApplicationWindow {
                 }
 
             }
+
             Tab {
                 title: "Transform"
+                anchors.topMargin: 5
+                anchors.leftMargin: 5
+                anchors.rightMargin: 5
+
+                GridLayout {
+                    columns: 2
+                    rowSpacing: 5
+                    columnSpacing: 5
+                    flow: GridLayout.LeftToRight
+
+                    Label {
+                        text: "scaleX: "+scaleX.value.toFixed(1)
+                    }
+                    Slider {
+                        id: scaleX
+                        value: 1
+                        stepSize: 0.1
+                        minimumValue: 0.1
+                        maximumValue: 10
+                        Layout.fillWidth: true
+                        onValueChanged: root.updateScale(scaleX.value, scaleY.value, scaleZ.value)
+                    }
+
+                    Label {
+                        text: "scaleY: "+scaleY.value.toFixed(1)
+                    }
+                    Slider {
+                        id: scaleY
+                        value: 1
+                        stepSize: 0.1
+                        minimumValue: 0.1
+                        maximumValue: 10
+                        Layout.fillWidth: true
+                        onValueChanged: root.updateScale(scaleX.value, scaleY.value, scaleZ.value)
+                    }
+
+                    Label {
+                        text: "scaleZ: "+scaleZ.value.toFixed(1)
+                    }
+                    Slider {
+                        id: scaleZ
+                        value: 1
+                        stepSize: 0.1
+                        minimumValue: 0.1
+                        maximumValue: 10
+                        Layout.fillWidth: true
+                        onValueChanged: root.updateScale(scaleX.value, scaleY.value, scaleZ.value)
+                    }
+                    Item {
+                        Layout.columnSpan: 2
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
+                }
 
             }
         }

@@ -4,6 +4,7 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.4
 
+
 GridLayout {
     columns: 2
     rowSpacing: 5
@@ -11,7 +12,7 @@ GridLayout {
     flow: GridLayout.LeftToRight
 
     Label {
-        text: "radius: "+sphereMesh.radius.toFixed(1)
+        text: "length: "+cylinderMesh.length.toFixed(1)
     }
     Slider {
         value: 5
@@ -19,11 +20,23 @@ GridLayout {
         minimumValue: 1
         maximumValue: 20
         Layout.fillWidth: true
-        onValueChanged: sphereMesh.radius = this.value
+        onValueChanged: cylinderMesh.length = this.value
     }
 
     Label {
-        text: "rings: "+sphereMesh.rings
+        text: "radius: "+cylinderMesh.radius.toFixed(1)
+    }
+    Slider {
+        value: 2
+        stepSize: 0.1
+        minimumValue: 1
+        maximumValue: 20
+        Layout.fillWidth: true
+        onValueChanged: cylinderMesh.radius = this.value
+    }
+
+    Label {
+        text: "rings: "+cylinderMesh.rings
     }
     Slider {
         value: 16
@@ -31,11 +44,11 @@ GridLayout {
         minimumValue: 3
         maximumValue: 20
         Layout.fillWidth: true
-        onValueChanged: sphereMesh.rings = this.value
+        onValueChanged: cylinderMesh.rings = this.value
     }
 
     Label {
-        text: "slices: "+sphereMesh.slices
+        text: "slices: "+cylinderMesh.slices
     }
     Slider {
         value: 16
@@ -43,7 +56,6 @@ GridLayout {
         minimumValue: 3
         maximumValue: 20
         Layout.fillWidth: true
-        onValueChanged: sphereMesh.slices = this.value
+        onValueChanged: cylinderMesh.slices = this.value
     }
 }
-

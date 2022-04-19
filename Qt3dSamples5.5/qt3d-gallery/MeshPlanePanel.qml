@@ -11,7 +11,7 @@ GridLayout {
     flow: GridLayout.LeftToRight
 
     Label {
-        text: "radius: "+sphereMesh.radius.toFixed(1)
+        text: "height: "+planeMesh.height.toFixed(1)
     }
     Slider {
         value: 5
@@ -19,31 +19,33 @@ GridLayout {
         minimumValue: 1
         maximumValue: 20
         Layout.fillWidth: true
-        onValueChanged: sphereMesh.radius = this.value
+        onValueChanged: planeMesh.height = this.value
     }
 
     Label {
-        text: "rings: "+sphereMesh.rings
+        text: "width: "+planeMesh.width.toFixed(1)
     }
     Slider {
-        value: 16
-        stepSize: 1
-        minimumValue: 3
+        value: 5
+        stepSize: 0.1
+        minimumValue: 1
         maximumValue: 20
         Layout.fillWidth: true
-        onValueChanged: sphereMesh.rings = this.value
+        onValueChanged: planeMesh.width = this.value
     }
 
+
     Label {
-        text: "slices: "+sphereMesh.slices
+        text: "mesh: "+planeMesh.meshResolution
     }
     Slider {
-        value: 16
+        value: 2
         stepSize: 1
-        minimumValue: 3
+        minimumValue: 1
         maximumValue: 20
         Layout.fillWidth: true
-        onValueChanged: sphereMesh.slices = this.value
+        onValueChanged: planeMesh.meshResolution = Qt.size(this.value, this.value)
     }
+
 }
 

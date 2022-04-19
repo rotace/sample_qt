@@ -12,12 +12,11 @@ GridLayout {
     flow: GridLayout.LeftToRight
 
     Label {
-        text: "radius: "+parseInt(radiusSlider.value)
+        text: "radius: "+torusMesh.radius.toFixed(1)
     }
     Slider {
-        id: radiusSlider
         value: 4
-        stepSize: 1
+        stepSize: 0.1
         minimumValue: 1
         maximumValue: 20
         Layout.fillWidth: true
@@ -25,12 +24,11 @@ GridLayout {
     }
 
     Label {
-        text: "minorRadius: "+parseInt(minorRadiusSlider.value)
+        text: "minorRadius: "+torusMesh.minorRadius.toFixed(1)
     }
     Slider {
-        id: minorRadiusSlider
         value: 2
-        stepSize: 1
+        stepSize: 0.1
         minimumValue: 1
         maximumValue: 20
         Layout.fillWidth: true
@@ -38,11 +36,10 @@ GridLayout {
     }
 
     Label {
-        text: "rings: "+parseInt(ringsSlider.value)
+        text: "rings: "+torusMesh.rings
     }
     Slider {
-        id: ringsSlider
-        value: 20
+        value: 16
         stepSize: 1
         minimumValue: 3
         maximumValue: 20
@@ -51,11 +48,10 @@ GridLayout {
     }
 
     Label {
-        text: "slices: "+parseInt(slicesSlider.value)
+        text: "slices: "+torusMesh.slices
     }
     Slider {
-        id: slicesSlider
-        value: 20
+        value: 16
         stepSize: 1
         minimumValue: 3
         maximumValue: 20
