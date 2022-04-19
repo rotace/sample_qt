@@ -14,12 +14,30 @@ ApplicationWindow {
     width: 640
     height: 480
 
+    property var mesh
+    property var material
+    property var trans
+    function updateViewer() {
+        viewerEntity.components = [this.mesh, this.material, this.trans]
+    }
+
     MessageDialog {
         id: aboutDialog
         icon: StandardIcon.Information
         title: "About"
         text: "Qt3D Collection"
         informativeText: "This example demonstrates most of the available Qt3D Entities."
+    }
+
+    ColorDialog {
+        id: colorDialog
+        title: "Please choose a color"
+        onAccepted: {
+            console.log("You chose: " + colorDialog.color)
+        }
+        onRejected: {
+            console.log("Canceled")
+        }
     }
 
     Action {
@@ -57,6 +75,7 @@ ApplicationWindow {
                 text: "Info"
                 onClicked: {
                     console.log("Scen3D:", scene3d.width, scene3d.height)
+                    console.log("TabView", tabView.width, tabView.height)
                     console.log("Camera View Center:", camera.viewCenter)
                 }
             }
@@ -82,31 +101,89 @@ ApplicationWindow {
         Menu {
             title: "&Help"
             MenuItem {
+                text: "Color"
+                onTriggered: colorDialog.open()
+            }
+            MenuItem {
                 text: "About..."
                 onTriggered: aboutDialog.open()
             }
         }
     }
 
-
-
     RowLayout{
         spacing: 10
         anchors.margins: 10
         anchors.fill: parent
 
+
+        Scene3D {
+            id: scene3d
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.minimumWidth: 500
+
+            focus: true
+            aspects: "input"
+
+            Entity {
+                id: sceneRoot
+
+                Camera{
+                    id: camera
+                    projectionType: CameraLens.PerspectiveProjection
+                    fieldOfView: 45
+                    aspectRatio: root.width/root.height
+                    nearPlane : 0.1
+                    farPlane : 1000.0
+                    position: Qt.vector3d( 0.0, 0.0, -50.0 )
+                    upVector: Qt.vector3d( 0.0, 1.0, 0.0 )
+                    viewCenter: Qt.vector3d( 0.0, 0.0, 0.0 )
+                }
+
+                Configuration  { controlledCamera: camera }
+                FrameGraph { activeFrameGraph: ForwardRenderer { camera: camera } }
+
+                // Mesh
+                CylinderMesh { id: cylinderMesh }
+                CuboidMesh { id: cuboidMesh }
+                SphereMesh { id: sphereMesh }
+                TorusMesh { id: torusMesh }
+                PlaneMesh { id: planeMesh }
+
+                // Material
+                PerVertexColorMaterial { id: perVertexColorMaterial }
+                GoochMaterial { id: goochMaterial }
+                PhongMaterial { id: phongMaterial }
+                DiffuseMapMaterial { id: diffuseMapMaterial }
+                DiffuseSpecularMapMaterial { id: diffuseSpecularMapMaterial }
+                NormalDiffuseMapMaterial { id: normalDiffuseMapMaterial }
+                NormalDiffuseMapAlphaMaterial { id: normalDiffuseMapAlphaMaterial }
+                NormalDiffuseSpecularMapMaterial { id: normalDiffuseSpecularMapMaterial }
+
+                // Transform
+                Transform {
+                    id: transform
+                    Translate { translation: Qt.vector3d(0, 0, 0) }
+//                    Scale { scale3D: Qt.vector3d(1.5, 1, 0.5) }
+//                    Rotate {
+//                        angle: 45
+//                        axis: Qt.vector3d(1, 0, 0)
+//                    }
+                }
+
+                Entity {
+                    id: viewerEntity
+                }
+            }
+        }
+
+
         TabView {
             id: tabView
             Layout.margins: 10
             Layout.fillHeight: true
-            Layout.minimumWidth: 300
-
-            property var mesh
-            property var material
-            property var trans
-            function updateViewer() {
-                viewerEntity.components = [this.mesh, material, transform]
-            }
+            Layout.minimumWidth: 250
 
             Tab {
                 title: "Mesh"
@@ -128,27 +205,27 @@ ApplicationWindow {
                         onCurrentTextChanged: {
                             switch(currentText) {
                             case "CylinderMesh":
-                                tabView.mesh = cylinderMesh
+                                root.mesh = cylinderMesh
                                 console.log("Not Implemented")
                                 break;
                             case "CuboidMesh":
-                                tabView.mesh = cuboidMesh
+                                root.mesh = cuboidMesh
                                 console.log("Not Implemented")
                                 break;
                             case "SphereMesh":
-                                tabView.mesh = sphereMesh
+                                root.mesh = sphereMesh
                                 meshLoader.source = "MeshSpherePanel.qml"
                                 break;
                             case "TorusMesh":
-                                tabView.mesh = torusMesh
+                                root.mesh = torusMesh
                                 meshLoader.source = "MeshTorusPanel.qml"
                                 break;
                             case "PlaneMesh":
-                                tabView.mesh = planeMesh
+                                root.mesh = planeMesh
                                 console.log("Not Implemented")
                                 break;
                             }
-                            tabView.updateViewer()
+                            root.updateViewer()
                         }
                     }
                     Item {
@@ -192,39 +269,39 @@ ApplicationWindow {
                         onCurrentTextChanged: {
                             switch(currentText) {
                             case "PhongMaterial":
-                                tabView.material = phongMaterial
+                                root.material = phongMaterial
                                 materialLoader.source = "MaterialPhongPanel.qml"
                                 break;
                             case "GoochMaterial":
-                                tabView.material = goochMaterial
+                                root.material = goochMaterial
                                 console.log("Not Implemented")
                                 break;
                             case "PerVertexColorMaterial":
-                                tabView.material = perVertexColorMaterial
+                                root.material = perVertexColorMaterial
                                 console.log("Not Implemented")
                                 break;
                             case "DiffuseMapMaterial":
-                                tabView.material = diffuseMapMaterial
+                                root.material = diffuseMapMaterial
                                 console.log("Not Implemented")
                                 break;
                             case "DiffuseSpecularMapMaterial":
-                                tabView.material = diffuseSpecularMapMaterial
+                                root.material = diffuseSpecularMapMaterial
                                 console.log("Not Implemented")
                                 break;
                             case "NormalDiffuseMapMaterial":
-                                tabView.material = normalDiffuseMapMaterial
+                                root.material = normalDiffuseMapMaterial
                                 console.log("Not Implemented")
                                 break;
                             case "NormalDiffuseMapAlphaMaterial":
-                                tabView.material = normalDiffuseMapAlphaMaterial
+                                root.material = normalDiffuseMapAlphaMaterial
                                 console.log("Not Implemented")
                                 break;
                             case "NormalDiffuseSpecularMapMaterial":
-                                tabView.material = normalDiffuseSpecularMapMaterial
+                                root.material = normalDiffuseSpecularMapMaterial
                                 console.log("Not Implemented")
                                 break;
                             }
-                            tabView.updateViewer()
+                            root.updateViewer()
                         }
                     }
                     Item {
@@ -249,89 +326,6 @@ ApplicationWindow {
 
             }
         }
-
-        Scene3D {
-            id: scene3d
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.minimumWidth: 400
-
-            focus: true
-            aspects: "input"
-
-            Entity {
-                id: sceneRoot
-
-                Camera {
-                    id: camera
-                    projectionType: CameraLens.PerspectiveProjection
-                    fieldOfView: 45
-                    aspectRatio: scene3d.width/scene3d.height
-                    nearPlane : 0.1
-                    farPlane : 1000.0
-                    position: Qt.vector3d( 0.0, 0.0, -40.0 )
-                    upVector: Qt.vector3d( 0.0, 1.0, 0.0 )
-                    viewCenter: Qt.vector3d( 0.0, 0.0, 0.0 )
-                }
-
-                Configuration  {
-                    controlledCamera: camera
-                }
-
-                components: [
-                    FrameGraph {
-                        activeFrameGraph: Viewport {
-                            id: viewport
-                            rect: Qt.rect(0.0, 0.0, 1.0, 1.0)
-                            clearColor: "transparent"
-
-                            CameraSelector {
-                                id : cameraSelector
-                                camera: camera
-
-                                ClearBuffer {
-                                    buffers : ClearBuffer.ColorDepthBuffer
-                                }
-                            }
-                        }
-                    }
-                ]
-
-
-                // Mesh
-                CylinderMesh { id: cylinderMesh }
-                CuboidMesh { id: cuboidMesh }
-                SphereMesh { id: sphereMesh }
-                TorusMesh { id: torusMesh }
-                PlaneMesh { id: planeMesh }
-
-                // Material
-                PerVertexColorMaterial { id: perVertexColorMaterial }
-                GoochMaterial { id: goochMaterial }
-                PhongMaterial { id: phongMaterial }
-                DiffuseMapMaterial { id: diffuseMapMaterial }
-                DiffuseSpecularMapMaterial { id: diffuseSpecularMapMaterial }
-                NormalDiffuseMapMaterial { id: normalDiffuseMapMaterial }
-                NormalDiffuseMapAlphaMaterial { id: normalDiffuseMapAlphaMaterial }
-                NormalDiffuseSpecularMapMaterial { id: normalDiffuseSpecularMapMaterial }
-
-                // Transform
-                Transform {
-                    id: transform
-                    Translate { translation: Qt.vector3d(0, 0, 0) }
-//                    Scale { scale3D: Qt.vector3d(1.5, 1, 0.5) }
-//                    Rotate {
-//                        angle: 45
-//                        axis: Qt.vector3d(1, 0, 0)
-//                    }
-                }
-
-                Entity {
-                    id: viewerEntity
-                }
-            }
-        }
-
 
     }
 }

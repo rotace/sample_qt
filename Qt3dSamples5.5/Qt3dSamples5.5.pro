@@ -5,4 +5,5 @@ SUBDIRS += \
     simple-qml \
     simple-hybrid \
     simple-scene3d \
+    simple-viewport \
     qt3d-gallery

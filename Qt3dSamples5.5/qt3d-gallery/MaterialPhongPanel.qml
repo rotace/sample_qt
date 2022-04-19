@@ -21,5 +21,19 @@ GridLayout {
         Layout.fillWidth: true
         onValueChanged: phongMaterial.shininess = this.value
     }
+
+    Label {
+        text: "ambient: "
+    }
+    Button {
+        text: phongMaterial.ambient
+        onClicked: colorDialog.open()
+        Layout.fillWidth: true
+        ColorDialog {
+            id: colorDialog
+            title: "Ambient Color"
+            onAccepted: phongMaterial.ambient = colorDialog.color
+        }
+    }
 }
 
