@@ -7,7 +7,8 @@ Qtのサンプルプログラム集
 | フォルダ | 内容 |
 | --- | --- |
 | EchoServer | マルチスレッドなTCP/UDP通信のサンプル |
-| Qt3dSamples | Qt3Dサンプル |
+| Qt3dSamples5.5 | Qt3Dサンプル |
+| SocketTester | ソケットテストプログラム |
 | TargetSimulator | 目標模擬ライブラリ |
 
 ## EchoServer

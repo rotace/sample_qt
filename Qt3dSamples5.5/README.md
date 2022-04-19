@@ -54,6 +54,6 @@ $ sudo apt install qml-module-qtquick*
 * [Github Qt3D](https://github.com/qt/qt3d/tree/5.5/examples/qt3d/common)
 * [QMLで記述したウィンドウをC++から制御する](https://theolizer.com/cpp-school4/cpp-school4-4/)
 
-## simple-viewport
+### simple-viewport
 以下のサイトを参考
 * [Qt3D: Multi Viewport QML Example](https://doc.qt.io/archives/qt-5.5/qt3drenderer-multiviewport-example.html)
