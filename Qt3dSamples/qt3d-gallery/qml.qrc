@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>MeshTorusPanel.qml</file>
+        <file>MeshSpherePanel.qml</file>
+        <file>MaterialPhongPanel.qml</file>
+    </qresource>
+</RCC>
