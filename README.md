@@ -7,8 +7,8 @@ Qtのサンプルプログラム集
 | フォルダ | 内容 |
 | --- | --- |
 | EchoServer | マルチスレッドなTCP/UDP通信のサンプル |
-| Qt3dSamples5.5 | Qt3Dサンプル |
 | SocketTester | ソケットテストプログラム |
+| Qt3dSamples5.5 | Qt3Dサンプル |
 | TargetSimulator | 目標模擬ライブラリ |
 
 ## EchoServer
@@ -16,7 +16,12 @@ Qtのサンプルプログラム集
 * [Qtのマルチスレッド機構](https://qiita.com/hermit4/items/f4f03a4533e8c332241b)
 * [QThreadを使ってみよう](https://qiita.com/hermit4/items/b1eaf6132fb06a30091f)
 
-## Qt3DSamples (Qt5.5)
+## SocketTester(Qt5.2~5.5)
+
+以下のサイトを参考に、QUdpSocketを使ってマルチキャストクライアントを作成
+* [QUdpSocket](https://doc.qt.io/qt-5/qudpsocket.html)
+
+## Qt3DSamples5.5 (Qt5.5)
 以下のサイトを参考に、Qt3Dのサンプルプログラムを作成
 * [Qt3D: C++Example](https://doc.qt.io/archives/qt-5.5/qt3drenderer-cpp-example-example.html)
 * [Qt3D: Simple C++ Example](https://doc.qt.io/archives/qt-5.5/qt3drenderer-simple-cpp-example.html)
