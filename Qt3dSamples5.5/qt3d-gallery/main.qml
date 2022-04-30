@@ -23,11 +23,12 @@ ApplicationWindow {
         scale.scale3D = Qt.vector3d(x, y, z)
     }
 
+
     MessageDialog {
         id: aboutDialog
         icon: StandardIcon.Information
         title: "About"
-        text: "Qt3D Collection"
+        text: "Qt3D Gallery"
         informativeText: "This example demonstrates most of the available Qt3D Entities."
     }
 
@@ -156,12 +157,14 @@ ApplicationWindow {
                 // Material
                 GoochMaterial { id: goochMaterial }
                 PhongMaterial { id: phongMaterial }
-                PerVertexColorMaterial { id: perVertexColorMaterial }
                 DiffuseMapMaterial { id: diffuseMapMaterial }
                 DiffuseSpecularMapMaterial { id: diffuseSpecularMapMaterial }
                 NormalDiffuseMapMaterial { id: normalDiffuseMapMaterial }
                 NormalDiffuseMapAlphaMaterial { id: normalDiffuseMapAlphaMaterial }
                 NormalDiffuseSpecularMapMaterial { id: normalDiffuseSpecularMapMaterial }
+                PerVertexColorMaterial { id: perVertexColorMaterial }
+                CustomPhongMaterial{ id: customPhongMaterial }
+                CustomGoochMaterial{ id: customGoochMaterial }
 
                 // Transform
                 Transform {
@@ -269,6 +272,8 @@ ApplicationWindow {
                             "NormalDiffuseMapMaterial",
                             "NormalDiffuseMapAlphaMaterial",
                             "NormalDiffuseSpecularMapMaterial",
+                            "CustomPhongMaterial",
+                            "CustomGoochMaterial",
 //                            "PerVertexColorMaterial",
                         ]
                         onCurrentTextChanged: {
@@ -304,6 +309,14 @@ ApplicationWindow {
                             case "PerVertexColorMaterial":
                                 root.material = perVertexColorMaterial
                                 console.log("Not Implemented")
+                                break;
+                            case "CustomPhongMaterial":
+                                root.material = customPhongMaterial
+                                materialLoader.source = "MaterialCustomPhongPanel.qml"
+                                break;
+                            case "CustomGoochMaterial":
+                                root.material = customGoochMaterial
+                                materialLoader.source = "MaterialCustomGoochPanel.qml"
                                 break;
                             }
                             root.updateViewer()

@@ -16,5 +16,13 @@
         <file>MaterialNormalDiffuseMapPanel.qml</file>
         <file>MaterialNormalDiffuseSpecularMapPanel.qml</file>
         <file>MaterialNormalDiffuseMapAlphaPanel.qml</file>
+        <file>CustomPhongMaterial.qml</file>
+        <file>shaders/CustomGooch.frag</file>
+        <file>shaders/CustomGooch.vert</file>
+        <file>MaterialCustomPhongPanel.qml</file>
+        <file>CustomGoochMaterial.qml</file>
+        <file>MaterialCustomGoochPanel.qml</file>
+        <file>shaders/CustomPhong.fsh</file>
+        <file>shaders/CustomPhong.vsh</file>
     </qresource>
 </RCC>
