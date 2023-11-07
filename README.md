@@ -10,6 +10,7 @@ Qtのサンプルプログラム集
 | SocketTester | ソケットテストプログラム | 5.2-5.15 |
 | Qt3dSamples5.5 | Qt3Dサンプル | 5.5 |
 | TargetSimulator5.5 | 目標模擬ライブラリ | 5.5 |
+| TreeViewer | ツリー表示のサンプル | 5.15 |
 
 ## EchoServer
 以下のサイトを参考に、QTcpServer、QTcpSocket、QUdpSocketを使ってマルチスレッドサーバを作成
@@ -33,3 +34,8 @@ Qtのサンプルプログラム集
 以下のサイトを参考に、QAbstractItemModel、QAbstractItemView、Qt3Dを使って目標模擬ライブラリを作成
 * [QtのMVC系アーキテクチャ モデル/ビューアーキテクチャ 初めの１歩](https://qiita.com/argama147/items/79db67c058560909ec1c)
 * [Qt3D Module](https://doc.qt.io/archives/qt-5.5/qt3d-index.html)
+
+## TreeViewer
+以下のサイトを参考に、QtSql、QTreeWidgetを使ってツリー表示のサンプルプログラムを作成
+* [QTreeWidget](https://doc.qt.io/qt-5/qtreewidget.html)
+* [再帰SQL -図解-](https://qiita.com/Shoyu_N/items/f1786f99545fa5053b75)
