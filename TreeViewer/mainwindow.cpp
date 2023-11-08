@@ -6,16 +6,44 @@
 #include "common.h"
 #include "makeviewdialog.h"
 
+constexpr qint32 INDEX_ID = 0;
+constexpr qint32 INDEX_PARENTID = 1;
+constexpr qint32 INDEX_PRIORITY = 2;
+
+/**
+ * @brief ツリー表示の列名を設定する
+ * @param w ウィジェット
+ */
+inline void CREATE_TREE_HEADER(QTreeWidget *w)
+{
+    w->setHeaderLabels(QStringList()
+                       << "id"
+                       << "parentId"
+                       << "priority"
+                       << "address"
+                       << "values");
+}
+
 /**
  * @brief ツリー要素を生成する
- * @param items 表示データ
+ * @param query クエリ
  * @return ツリー要素
  */
-inline QTreeWidgetItem* CREATE_TREE_ITEM(QStringList items)
+inline QTreeWidgetItem* CREATE_TREE_ITEM(QSqlRecord record)
 {
-    QTreeWidgetItem *item = new QTreeWidgetItem(items);
+    // ツリー要素の生成
+    QTreeWidgetItem *item = new QTreeWidgetItem();
+    QVariant priority = record.value("priority");
+    qint32 count = 0;
+    item->setData(count++, Qt::DisplayRole, record.value("id"));
+    item->setData(count++, Qt::DisplayRole, record.value("parentId"));
+    item->setData(count++, Qt::DisplayRole, (priority.isNull() ? QVariant() : priority.toInt()));
+    item->setData(count++, Qt::DisplayRole, record.value("address"));
+    item->setData(count++, Qt::DisplayRole, record.value(record.count()-1));
+
+    // ツリー要素の各種設定
     item->setFlags(item->flags() | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable);
-    item->setCheckState(3, Qt::Checked);
+    item->setCheckState(0, Qt::Checked);
     return item;
 }
 
@@ -132,52 +160,46 @@ void MainWindow::onPushButtonImportCsvClicked()
     mModel->setQuery("select * from MainView", db);
 
     // ツリー表示を更新する
-    QString oldAddress;
-    QString curAddress;
-    QStringList indentations;
-    QList<QTreeWidgetItem*> parents;
+    this->updateTreeWidget();
+
+    qDebug() << "Load Finished!";
+}
+
+/**
+ * @brief ツリー表示を更新する
+ */
+void MainWindow::updateTreeWidget()
+{
+    QList<QTreeWidgetItem*> stackItems;
+    QSqlQuery query(QSqlDatabase::database(mDatabaseId));
+
+    // ツリー表示の初期化
+    ui->treeWidget->clear();
+    CREATE_TREE_HEADER(ui->treeWidget);
+
+    // スタックの先頭にルート要素を追加する
+    stackItems << ui->treeWidget->invisibleRootItem();
+
+    // アドレス順に並び替える
     if(!query.exec("select * from MainView order by address asc")) PUBLISH_QUERY_ERROR(query);
+
+    // アドレス順にツリーを構築
     while(query.next())
     {
-        oldAddress = curAddress;
-        curAddress = query.value("address").toString();
-        QVariant id = query.value("id");
-        QVariant parentId = query.value("parentId");
-        QStringList values;
-        for(qint32 i=2; i<query.record().count(); i++)
-            values << query.value(i).toString();
+        // スタックの先頭が親になるまでスタックから要素を取り除く
+        qint32 parentLevel = query.value("address").toString().split("/").size();
+        while(parentLevel < stackItems.count()) stackItems.removeLast();
 
-        QStringList displays = QStringList()
-                << id.toString()
-                << parentId.toString()
-                << curAddress
-                << values.join(",");
+        // スタックには常にルート要素が存在する
+        Q_ASSERT(stackItems.count()>0);
 
-        while(!indentations.isEmpty())
-        {
-            if(curAddress.startsWith(indentations.last()))
-            {
-                QTreeWidgetItem *item = CREATE_TREE_ITEM(displays);
-                parents.last()->addChild(item);
-                indentations << curAddress;
-                parents << item;
-                break;
-            }
-            else
-            {
-                indentations.removeLast();
-                parents.removeLast();
-            }
-        }
-
-        if(indentations.isEmpty())
-        {
-            QTreeWidgetItem *item = CREATE_TREE_ITEM(displays);
-            ui->treeWidget->addTopLevelItem(item);
-            indentations << curAddress;
-            parents << item;
-        }
+        // 生成した要素を親レベルに追加＆スタックの先頭に追加
+        QTreeWidgetItem *item = CREATE_TREE_ITEM(query.record());
+        stackItems.last()->addChild(item);
+        stackItems << item;
     }
-    qDebug() << "Load Finished!";
+
+    // 優先度順に並び替える
+    ui->treeWidget->sortItems(INDEX_PRIORITY, Qt::AscendingOrder);
 }
 

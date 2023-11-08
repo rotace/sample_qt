@@ -6,15 +6,35 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>228</width>
-    <height>136</height>
+    <width>235</width>
+    <height>166</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="4" column="0" colspan="2">
+   <item row="1" column="1">
+    <widget class="QComboBox" name="comboBoxId"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Parent ID</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>ID</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="comboBoxParentId"/>
+   </item>
+   <item row="5" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -24,27 +44,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <widget class="QComboBox" name="comboBoxParentId"/>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Parent ID</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QComboBox" name="comboBoxId"/>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>ID</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
+   <item row="4" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -61,6 +61,16 @@
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Please Select ID and Parent ID</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QComboBox" name="comboBoxPriority"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Priority</string>
      </property>
     </widget>
    </item>

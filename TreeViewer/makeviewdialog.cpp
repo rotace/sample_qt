@@ -17,12 +17,15 @@ MakeViewDialog::MakeViewDialog(QString databaseId, QWidget *parent)
     ui->setupUi(this);
 
     // ウィジェットの初期化
+    ui->comboBoxParentId->addItem("null");
+    ui->comboBoxPriority->addItem("null");
     QSqlQuery query(QSqlDatabase::database(mDatabaseId));
     if(!query.exec("PRAGMA table_info('MainTable')")) PUBLISH_QUERY_ERROR(query);
     while(query.next())
     {
         ui->comboBoxId->addItem(query.value("name").toString());
         ui->comboBoxParentId->addItem(query.value("name").toString());
+        ui->comboBoxPriority->addItem(query.value("name").toString());
     }
 
     connect(this, &QDialog::accepted, this, [=](){
@@ -34,7 +37,8 @@ MakeViewDialog::MakeViewDialog(QString databaseId, QWidget *parent)
         sql << "create view AdjacencyList as"
             << "select"
             << ui->comboBoxId->currentText() << "as id,"
-            << ui->comboBoxParentId->currentText() << "as parentId"
+            << ui->comboBoxParentId->currentText() << "as parentId,"
+            << ui->comboBoxPriority->currentText() << "as priority"
             << "from MainTable";
 
         if(!query.exec("drop view if exists AdjacencyList")) PUBLISH_QUERY_ERROR(query);

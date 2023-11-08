@@ -22,4 +22,7 @@ private:
 
 private slots:
     void onPushButtonImportCsvClicked();
+
+private slots:
+    void updateTreeWidget();
 };

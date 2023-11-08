@@ -48,28 +48,7 @@
         <widget class="QTableView" name="tableView"/>
        </item>
        <item>
-        <widget class="QTreeWidget" name="treeWidget">
-         <column>
-          <property name="text">
-           <string>id</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>parentId</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>address</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>values</string>
-          </property>
-         </column>
-        </widget>
+        <widget class="QTreeWidget" name="treeWidget"/>
        </item>
       </layout>
      </widget>
